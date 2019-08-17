@@ -1,0 +1,207 @@
+ .point1 {
+     filter: progid: DXImageTransform.Microsoft.AlphaImageLoader(src='images/1.png', sizingMethod='scale');
+     position: relative;
+     /* width: 67.26px;
+            height: 45.84px; */
+     left: 228px;
+     top: 267.91px;
+     background: none !important;
+ }
+ 
+ .point2 {
+     position: relative;
+     /* width: 71.54px;
+             height: 60.49px; */
+     left: 164.04px;
+     top: 230.16px;
+ }
+ 
+ .point3 {
+     position: relative;
+     /* width: 69.16px; */
+     /* height: 69.48px; */
+     left: 110.85px;
+     top: 199.37px;
+ }
+ 
+ .point4 {
+     position: relative;
+     /* width: 60.4px;
+            height: 71.28px; */
+     left: 71.48px;
+     top: 177.06px;
+ }
+ 
+ .point5 {
+     position: relative;
+     /* width: 45.95px;
+            height: 66.35px; */
+     left: 52.46px;
+     top: 165.5px;
+ }
+ 
+ .point6 {
+     position: relative;
+     /* width: 45.78px;
+            height: 66.26px; */
+     left: 51.69px;
+     top: 165.45px;
+ }
+ 
+ .point7 {
+     position: relative;
+     /* width: 60.47px;
+            height: 71.26px; */
+     left: 33px;
+     top: 177.1px;
+ }
+ 
+ .point8 {
+     position: relative;
+     /* width: 69.29px;
+            height: 69.47px; */
+     left: -6px;
+     top: 199.41px;
+ }
+ 
+ .point9 {
+     position: relative;
+     /* width: 71.54px;
+            height: 60.33px; */
+     left: -58.80px;
+     top: 230.18px;
+ }
+ 
+ .point10 {
+     position: relative;
+     /* width: 67.22px;
+            height: 45.84px; */
+     left: -122.25px;
+     top: 267.93px;
+ }
+ 
+ @keyframes spin {
+     0% {
+         transform: rotate(0deg);
+     }
+     1.66%,
+     3.33% {
+         transform: rotate(12deg);
+     }
+     4.99%,
+     6.66% {
+         transform: rotate(24deg);
+     }
+     8.32%,
+     9.99% {
+         transform: rotate(36deg);
+     }
+     11.65%,
+     13.32% {
+         transform: rotate(48deg);
+     }
+     14.98%,
+     16.65% {
+         transform: rotate(60deg);
+     }
+     18.31%,
+     19.98% {
+         transform: rotate(72deg);
+     }
+     21.65%,
+     23.31% {
+         transform: rotate(84deg);
+     }
+     24.98%,
+     26.65% {
+         transform: rotate(96deg);
+     }
+     28.31%,
+     29.98% {
+         transform: rotate(108deg);
+     }
+     31.65%,
+     33.33% {
+         transform: rotate(120deg);
+     }
+     34.98%,
+     36.65% {
+         transform: rotate(132deg);
+     }
+     38.33%,
+     39.98% {
+         transform: rotate(144deg);
+     }
+     41.65%,
+     43.33% {
+         transform: rotate(156deg);
+     }
+     44.98%,
+     46.65% {
+         transform: rotate(168deg);
+     }
+     48.33%,
+     50% {
+         transform: rotate(180deg);
+     }
+     51.65%,
+     53.33% {
+         transform: rotate(192deg);
+     }
+     54.99%,
+     56.65% {
+         transform: rotate(204deg);
+     }
+     58.33%,
+     59.99% {
+         transform: rotate(216deg);
+     }
+     61.65%,
+     63.33% {
+         transform: rotate(228deg);
+     }
+     64.99%,
+     66.66% {
+         transform: rotate(240deg);
+     }
+     68.33%,
+     69.99% {
+         transform: rotate(252deg);
+     }
+     71.66%,
+     73.33% {
+         transform: rotate(264deg);
+     }
+     74.99%,
+     76.66% {
+         transform: rotate(276deg);
+     }
+     78.33%,
+     79.99% {
+         transform: rotate(288deg);
+     }
+     81.66%,
+     83.33% {
+         transform: rotate(300deg);
+     }
+     84.99%,
+     86.66% {
+         transform: rotate(312deg);
+     }
+     88.33%,
+     89.99% {
+         transform: rotate(324deg);
+     }
+     91.66%,
+     93.33% {
+         transform: rotate(336deg);
+     }
+     94.99%,
+     96.66% {
+         transform: rotate(348deg);
+     }
+     98.33%,
+     100% {
+         transform: rotate(360deg);
+     }
+ }
