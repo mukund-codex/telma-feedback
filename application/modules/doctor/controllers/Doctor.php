@@ -97,7 +97,23 @@ class Doctor extends User_Controller
 
             if( empty($division_name) || empty($doctor_name) || empty($doctor_mobile)){
                 continue;
-            }
+			}
+			
+			if(strlen($doctor_mobile) != 10){
+				continue;
+			}
+
+			if(!is_numeric($doctor_mobile)){
+				continue;
+			}
+
+			if(!ctype_alnum($division_name)){
+				continue;
+			}
+
+			if(!ctype_alnum($doctor_name)){
+				continue;
+			}
 
 			$div_record = $this->model->get_records(['division_name'=> $division_name], 'divisions', ['division_id'], '', 1);	
 			
