@@ -48,8 +48,8 @@
                         <span>Doctor</span>
                     </a>
                 </li>
-
-                <li <?php echo ($mainmenu == 'sms') ? 'class="active"': ''; ?>>
+                
+                <li <?php echo in_array($mainmenu, ['sms','scheduledsms']) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                     <i class="material-icons">receipt</i>
                         <span>Logs</span>
@@ -59,19 +59,9 @@
                             <a href="<?php echo base_url("scheduledsms/lists?t=$timestamp") ?>">Scheduled SMS Log</a>
                         </li>
 
-                        <li <?php echo ($menu == 'pdf_download_log') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("reports/view/type/pdf_download_log") ?>">PDF Download Count Log</a>
-                        </li>
-
-                        <li <?php echo ($menu == 'sms_list') ? 'class="active"': ''; ?>>
+                        <li <?php echo ($menu == 'sms') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("sms/lists?t=$timestamp") ?>">SMS Log</a>
                         </li>
-                        <li <?php echo ($menu == 'unsub_list') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("unsubscribe/lists?t=$timestamp") ?>">Unsubscribe Log</a>
-                        </li>
-                        <li <?php echo ($menu == 'send_sms') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("sms/add?t=$timestamp") ?>">Send SMS</a>
-                        </li> 
                     </ul>
                 </li>
 
