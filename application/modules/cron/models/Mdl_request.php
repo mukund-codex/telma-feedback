@@ -19,7 +19,8 @@ class Mdl_request extends MY_Model {
 		d.division_name, d.sender_id, doc.name, doc.mobile')
         ->from('sms_data sd')
         ->join('divisions d', 'd.division_id = sd.division_id')
-        ->join('doctor doc', 'doc.division_id = d.division_id');
+        ->join('doctor doc', 'doc.division_id = d.division_id')
+        ->where('sd.is_processed', 0);
         
 		if(sizeof($sfilters)) { 
             

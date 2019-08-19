@@ -16,17 +16,19 @@ class Request extends Generic_Controller{
         $is_cron_active = $this->model->is_cron_active();
 
         if($is_cron_active){
-            echo 'SMS Sending already in progress'; die();
+            echo 'SMS Sending already in progress'; 
+            die();
         }
 
         $update = $this->model->_update(['status'=> 0], ['status'=> 1], 'sms_cron_status'); 
 
         if(!$update){
-            echo 'Unable to start the cron, please check the conditions'; die();
+            echo 'Unable to start the cron, please check the conditions'; 
+            die();
         }
 
         $sms_collection = $this->model->get_doctors();
-
+        
         if(count($sms_collection)){
             
             foreach ($sms_collection as $sms) {
@@ -48,7 +50,7 @@ class Request extends Generic_Controller{
                     $sms_status = send_sms($mobile, $message, $sms_type, '', '', $sender_id);
                     
                     if($sms_status){
-                        $deleted = $this->model->_delete('sms_data_id', [$sms_data_id], 'sms_data');
+                        $update = $this->model->_update(['sms_data_id' => $sms_data_id], ['is_processed' => 1], 'sms_data');
                     }else{
                         echo 'SMS sending failed for ' . $sms_data_id;
                     }
@@ -57,5 +59,8 @@ class Request extends Generic_Controller{
             }
         }
         $this->model->_update(['status'=> 1], ['status'=> 0], 'sms_cron_status');
+
+        echo 'Success';
+        exit;
     }
 }
