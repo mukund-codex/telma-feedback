@@ -96,6 +96,18 @@ class Divisions extends User_Controller
                 continue;
             }
 
+			if(strlen($sender_id) != 6){
+				continue;
+			}
+			
+			if(!ctype_alnum($division_name)){
+				continue;
+			}
+
+			if(!ctype_alpha($sender_id)){
+				continue;
+			}
+
 			$record = $this->model->get_or_records(['division_name'=> $division_name, 'sender_id' => $sender_id], 'divisions', ['division_id'], '', 1);
 			if(count($record)) {
 				continue;
