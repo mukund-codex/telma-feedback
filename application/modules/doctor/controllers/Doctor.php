@@ -101,6 +101,10 @@ class Doctor extends User_Controller
 
 			$div_record = $this->model->get_records(['division_name'=> $division_name], 'divisions', ['division_id'], '', 1);	
 			
+			if(empty($div_record)){
+				continue;
+			}
+
 			$division_id = $div_record[0]->division_id;		
 			
 			/* if(count($div_record)) {
@@ -117,7 +121,7 @@ class Doctor extends User_Controller
 			$url = base_url("feedback/redirect?id=$key");
 		
 			$tiny_url = $this->model->get_tiny_url($url);
-
+			
 			$insert['division_id'] = $division_id;
             $insert['name'] = $doctor_name;
             $insert['mobile'] = $doctor_mobile;
@@ -125,7 +129,7 @@ class Doctor extends User_Controller
 			$insert['original_url'] = $url;
 			$insert['tiny_url'] = $tiny_url;
 
-			$this->load->helper('send_sms');
+			//$this->load->helper('send_sms');
 
 			/* $to = $doctor_mobile;
 			$msg = $tiny_url;
