@@ -3,10 +3,48 @@ class Mdl_scheduledsms extends MY_Model {
 
 	public $p_key = 'sms_data_id';
 	public $table = 'sms_data';
+	private $alias = 'msgdata';
+	private $column_list = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
+    private $csv_columns = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
 
 	function __construct() {
-		parent::__construct($this->table);
+		parent::__construct($this->table, $this->p_key);
 	}
+
+    function get_csv_columns() {
+        return $this->csv_columns;
+    }
+
+    function get_column_list() {
+        return $this->column_list;
+    }
+
+	function get_filters() {
+        return [
+            [
+                'field_name'=>'division_name',
+                'field_label'=> 'Division Name',
+            ],
+            [
+                'field_name'=>'message',
+                'field_label'=> 'Message',
+            ]
+        ];
+	}
+	
+	function get_filters_from($filters) {
+        $new_filters = array_column($this->get_filters(), 'field_name');
+        
+        if(array_key_exists('from_date', $filters))  {
+            array_push($new_filters, 'from_date');
+        }
+
+        if(array_key_exists('to_date', $filters))  {
+            array_push($new_filters, 'to_date');
+        }
+
+        return $new_filters;
+    }
 
 	function get_records_of($field = '', $id_arr = [], $select = [], $table = ''){
 		$table = (! empty($table)) ? $table : $this->get_table();
@@ -41,64 +79,67 @@ class Mdl_scheduledsms extends MY_Model {
 
 	}
 
-	function get_collection($f_filters = [], $keywords ='', $limit = 0, $offset = 0 ) {
-
+	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
+		
     	$q = $this->db->select("
-    		msgdata.sms_data_id, msgdata.therapy_id, msgdata.message, msgdata.sms_date_time, msgdata.is_processed, msgdata.insert_dt, msgdata.update_dt,
+    		msgdata.sms_data_id, msgdata.division_id, msgdata.message, msgdata.sms_date_time, msgdata.is_processed, msgdata.insert_dt, msgdata.update_dt,div.division_name,
     		case when msgdata.is_processed = 0 then 'Pending' 
 				when msgdata.is_processed = 1 then 'SMS Sent' end as sms_sts
     	")
-		->from('sms_data msgdata');
+		->from('sms_data msgdata')
+		->join('divisions div', 'div.division_id = msgdata.division_id', 'left');
 				
 		$where_condition = " 1=1 ";
 
-		if(sizeof($f_filters)) { 
-			foreach ($f_filters as $key=>$value) { 
-				//$q->where("$key", $value); 
-				if(($key == 'DATE(msgdata.insert_dt) >=') || ($key == 'DATE(msgdata.insert_dt) <=')) {
-					$where_condition .= " AND $key '".$value."'";
-				} else {
-					$q->where("$key", $value); 
-				}
+		if(sizeof($sfilters)) { 
+            
+            foreach ($sfilters as $key=>$value) { 
+                $q->where("$key", $value); 
 			}
 		}
+        
+		if(is_array($rfilters) && count($rfilters) ) {
+			$field_filters = $this->get_filters_from($rfilters);
+			
+            foreach($rfilters as $key=> $value) {
+                if(!in_array($key, $field_filters)) {
+                    continue;
+                }
+                
+                if($key == 'from_date' && !empty($value)) {
+                    $this->db->where('DATE('.$this->alias.'.insert_dt) >=', date('Y-m-d', strtotime($value)));
+                    continue;
+                }
 
-		if(!empty($keywords)) { 
-			$s_key = $this->db->escape_like_str($keywords);
+                if($key == 'to_date' && !empty($value)) {
+                    $this->db->where('DATE('.$this->alias.'.insert_dt) <=', date('Y-m-d', strtotime($value)));
+                    continue;
+                }
 
-			/* $where_condition = "(
-				th.therapy_name like '". $s_key ."%'				
-			) "; */
-
-			//$q->where($where_condition, NULL, FALSE);
-		}
-
-		if(!empty($where_condition)) {
-			$q->where($where_condition, NULL, FALSE);
-		}
-
+                if(!empty($value))
+                    $this->db->like($key, $value);
+            }
+        }
 
 		$q->order_by('msgdata.update_dt desc');
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }
 		//echo $this->db->get_compiled_select(); die();
-		$collection = $q->get()->result();
+		$collection = (! $count) ? $q->get()->result_array() : $q->count_all_results();
 		return $collection;
 	}	
-
-	
 
 	function save(){
 		/*Load the form validation Library*/
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('therapy_id','Therapy Name','trim|required|xss_clean');
+		$this->form_validation->set_rules('division_id','Division Name','trim|required|xss_clean');
 		
 		if($this->input->post('sendsmsnowtest') != 1) {
 			$this->form_validation->set_rules('sms_date', 'SMS Date', 'trim|required');
 		}
 		
-		$this->form_validation->set_rules('message','Message','trim|required|xss_clean');
+		$this->form_validation->set_rules('message','Message','trim|max_length[128]|required|xss_clean');
 
 		if(!$this->form_validation->run()) {
 
@@ -114,39 +155,36 @@ class Mdl_scheduledsms extends MY_Model {
 			$data = array();
 			$is_success = '';
 
-			$therapyId = $this->input->post('therapy_id');
+			$division_id = $this->input->post('division_id');
 			if(!empty($this->input->post('sms_date'))) {
 				$smsDate = $this->input->post('sms_date');
 			} else {
 				$smsDate = date("Y-m-d H:i:00");
 			}
 			
+			$sender = $this->get_records(['division_id'=> $division_id], 'divisions', ['sender_id']);
+			$sender_id = $sender[0]->sender_id;
+
 			$message = $this->input->post('message');
 
 			$smsnewdateforchk = date("Y-m-d",strtotime($smsDate));
 			
 			$smsnewdate = date("Y-m-d H:i:00",strtotime($smsDate.' + 2 minute'));				
 
-			$records = $this->get_records(['therapy_id'=> $therapyId,'sms_date_time like'=>"$smsnewdateforchk%"], 'sms_data', ['sms_data_id']);
-
-			// echo $this->db->last_query();
-
-			// print_r($records);
-			// exit;
+			$records = $this->get_records(['division_id'=> $division_id,'sms_date_time like'=>"$smsnewdateforchk%"], 'sms_data', ['sms_data_id']);
 
 			if(count($records) > 0) {
 
-				$response['msg'] = 'SMS Already scheduled for the Therapy selected on the date selected'; // Some might be empty
+				$response['msg'] = 'SMS Already scheduled for the Division selected on the date selected'; // Some might be empty
 	        	$response['status'] = FALSE;
 				
 			} else {
 
-				$data['therapy_id'] = $therapyId;
-				$data['message'] 	= $message." To opt out, call on 09513666968";
+				$data['division_id'] = $division_id;
+				$data['message'] 	= $message;
 				$data['sms_date_time']  = $smsnewdate;						
 
 				$sms_data_id = $this->_insert($data);
-				//echo $this->db->last_query();exit;	
 				$response['status'] = TRUE;
 			}		
 		}
@@ -238,13 +276,13 @@ class Mdl_scheduledsms extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
-			$msg = $rows->message;
-			$records['Therapy Name'] = $rows->therapy_name;
+			$msg = $rows['message'];
+			$records['Division Name'] = $rows['division_name'];
 			$records['Message'] = "$msg";
-			$records['SMS Date Time'] = $rows->sms_date_time;
-			$records['Processed Status'] = $rows->sms_sts;
-			$records['Date Added'] = $rows->insert_dt;
-			$records['Date Updated'] = $rows->update_dt;
+			$records['SMS Date Time'] = $rows['sms_date_time'];
+			$records['Processed Status'] = $rows['sms_sts'];
+			$records['Date Added'] = $rows['insert_dt'];
+			$records['Date Updated'] = $rows['update_dt'];
 			array_push($resultant_array, $records);
 		}
 

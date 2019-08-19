@@ -1,5 +1,7 @@
 (function ($) {
 
+    load('division_id', 'Division Name', 'divisions/options', true);
+
     $('#img_preview').on('click', function (e) {
         e.preventDefault();
         var formObj = $(this).closest('form');
@@ -155,6 +157,5 @@
         $('#textarea_feedback').html('<span class="badge">' +text_remaining + '</span>' + ' characters remaining');
     });
 
-    load('division_id', 'Division Name', 'divisions/options', true);
 
 })(jQuery)

@@ -10,6 +10,8 @@ class Request extends Generic_Controller{
     }
     
     function process_bulk_sms(){
+        $current_datetime = date('Y-m-d H:i:00');
+
         $this->load->helper('send_sms');
         $is_cron_active = $this->model->is_cron_active();
 
@@ -23,29 +25,35 @@ class Request extends Generic_Controller{
             echo 'Unable to start the cron, please check the conditions'; die();
         }
 
-        $sms_collection = $this->model->get_records([], 'sms_queue');
+        $sms_collection = $this->model->get_doctors();
 
         if(count($sms_collection)){
             
             foreach ($sms_collection as $sms) {
-                $sms_queue_id = $sms->sms_queue_id;
-                $mobile = $sms->send_to;
-				$user_type = $sms->user_group;
-				$sms_group = $sms->selection_type;
-                $message = $sms->sms_text;
-                $sms_type = $user_type . ' ' . $sms_group; 
-
-                /* $insertArr['is_valid_request'] = 1;
-				$insertArr['reason'] = $sms_type = $user_type . ' ' . $sms_group .' SMS SENT'; */
-
-				$sms_status = send_sms($mobile, $message, $sms_type);
-                //$is_success = $this->model->_insert($insertArr, 'sms_received_log');
                 
-                if($sms_status){
-                    $deleted = $this->model->_delete('sms_queue_id', [$sms_queue_id], 'sms_queue');
-                }else{
-                    echo 'SMS sending failed for ' . $sms_queue_id;
+                $sms_data_id = $sms['sms_data_id'];
+                $name = $sms['name'];
+                $mobile = $sms['mobile'];
+				$division_name = $sms['division_name'];
+				$sender_id = $sms['sender_id'];
+                $sms_type = $division_name; 
+                $message = $sms['message']; 
+                $sms_date_time = $sms['sms_date_time']; 
+
+                if(empty($name) || empty($mobile) || empty($sender_id) || empty($message) || empty($sms_date_time) ) {
+                    continue;
                 }
+
+                if(strtotime($current_datetime) == strtotime($sms_date_time)) {
+                    $sms_status = send_sms($mobile, $message, $sms_type, '', '', $sender_id);
+                    
+                    if($sms_status){
+                        $deleted = $this->model->_delete('sms_data_id', [$sms_data_id], 'sms_data');
+                    }else{
+                        echo 'SMS sending failed for ' . $sms_data_id;
+                    }
+                }
+
             }
         }
         $this->model->_update(['status'=> 1], ['status'=> 0], 'sms_cron_status');

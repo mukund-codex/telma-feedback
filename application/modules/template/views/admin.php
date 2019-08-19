@@ -50,12 +50,29 @@
     <?php endif; ?>
     
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datepicker.css">
+
+    <link href="<?php echo base_url() ?>assets/plugins/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <!-- Custom Css -->
     <link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/css/themes/all-themes.css" rel="stylesheet" />
     <script type="text/javascript">
         var baseUrl = "<?php echo base_url() ?>";
     </script>
+
+<script type="text/javascript">
+ function loadDateDiv() {
+    
+      if(document.getElementById("sendsmsnowtest").checked == true) {
+      		$("#datedivshow").toggle();
+      		document.getElementById("sendnowlink").disabled = false;
+      } else {
+      	$("#datedivshow").toggle();
+      	document.getElementById("sendnowlink").disabled = true;
+      }
+    
+  	
+   }
+</script> 
 
 </head>
 <body class="theme-<?= $settings['theme'] ?>">
@@ -177,6 +194,9 @@
     <script src="<?php echo base_url() ?>assets/resources/common.js"></script>
     <script src="<?php echo base_url() ?>assets/js/pages/ui/tooltips-popovers.js"></script>
 
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script> -->
+
     <script type="text/javascript">var controller = "<?php echo $controller ?>";</script>
     <script src="<?php echo base_url('pwabuilder-sw.js') ?>"></script>
 
@@ -192,6 +212,54 @@
 
     <?php if(isset($js) && sizeof($js)): foreach($js as $javascript): ?>
     <script type="text/javascript" src="<?php echo base_url()?>assets/resources/<?php echo $javascript ?>?ver=<?php echo $timestamp ?>"></script>
+
+<script type="text/javascript">
+     $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+
+
+    });
+
+     function limitTextOnKeyUpDown(limitField, limitCount, limitNum) {
+     	console.log(limitField);
+      if (limitField.value.length > limitNum) {
+        limitField.value = limitField.value.substring(0, limitNum);
+      } else {
+        limitCount.value = limitNum - limitField.value.length;
+      }
+    }
+
+    function DoFunc()
+	{
+	    if (confirm('Are you sure you want to send SMS now?'))
+	    {
+	        document.getElementById("testclk").click();
+	    } else {
+	    	document.getElementById("sendsmsnowtest").checked = false;
+	    	$("#datedivshow").toggle();
+	    	document.getElementById("sendnowlink").disabled = true;
+	    }
+	}
+
+   function chk_send_now() {
+   		dialog.confirm({
+	        message: 'Do you really want to submit the form?',
+	        confirm: function() {
+	            console.log('yes');
+	        },
+	        cancel: function() {
+	        	console.log('no');
+	        }
+	    });
+   }
+</script> 
     <?php endforeach; endif; ?>
 
 </body>
