@@ -114,7 +114,7 @@ class Mdl_divisions extends MY_Model {
                 [
 					'field' => 'sender_id',
 					'label' => 'Sender Id',
-					'rules' => 'trim|required|exact_length[6]|alpha_numeric|unique_record[add.table.divisions.sender_id.' . $this->input->post('sender_id') .']|xss_clean'
+					'rules' => 'trim|required|exact_length[6]|alpha|unique_record[add.table.divisions.sender_id.' . $this->input->post('sender_id') .']|xss_clean'
 				],
 				
 			];
@@ -130,7 +130,7 @@ class Mdl_divisions extends MY_Model {
                 [
 					'field' => 'sender_id',
 					'label' => 'Sender Id',
-					'rules' => 'trim|required|alpha_numeric|exact_length[6]|unique_record[edit.table.divisions.sender_id.' . $this->input->post('sender_id'). '.division_id.'. $this->input->post('division_id') .']|xss_clean'
+					'rules' => 'trim|required|alpha|exact_length[6]|unique_record[edit.table.divisions.sender_id.' . $this->input->post('sender_id'). '.division_id.'. $this->input->post('division_id') .']|xss_clean'
                 ],
                 
 			];
