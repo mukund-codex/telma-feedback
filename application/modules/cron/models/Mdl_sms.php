@@ -9,41 +9,15 @@ class Mdl_sms extends MY_Model {
 		parent::__construct($this->table);
 	}
 
-	function get_collection($filter_group = '',$doctor_ids = [], $user_mobile = '') {
+	function get_collection() {
 
     	$q = $this->db->select('
-		doctor.doc_id, doctor.city_id, dht.doctor_ivr ,
-		mr.users_id AS mr_id, mr.users_name AS mr_name, mr.users_mobile AS mr_mobile, 
-		asm.users_id AS asm_id, asm.users_name AS asm_name, asm.users_mobile AS asm_mobile
+		d.*, div.*
     	')
-		->from('doctor_health_tips dht')
-		->join('doctor', 'dht.doctor_id = doctor.doc_id')
-		->join('city', 'doctor.city_id = city.city_id')
-		->join('manpower mr' , 'mr.users_city_id = doctor.city_id','LEFT')
-		->join('manpower asm' , 'asm.users_id = mr.users_parent_id','LEFT')
-		->where('doctor.is_deleted',0);
+		->from('doctor d')
+		->join('divisions div', 'd.division_id = div.division_id');
 
-		if(count($doctor_ids)){
-			$this->db->where_in('doctor.doc_id', $doctor_ids);
-		}
-
-		if($filter_group == 'MR'){
-			if($user_mobile){
-				$this->db->where('mr.users_mobile', $user_mobile);
-			}
-			$q->group_by('mr_id');
-		}
-
-		if($filter_group == 'ASM'){
-			if($user_mobile){
-				$this->db->where('asm.users_mobile', $user_mobile);
-			}
-			$q->group_by('asm_id');
-		}
-
-		$this->db->having('dht.doctor_ivr IS NOT NULL'); 
-
-		// print_r($this->db->get_compiled_select());exit;
+		//print_r($this->db->get_compiled_select());exit;
 		$collection = $q->get()->result();
 		return $collection;
 	}

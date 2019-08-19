@@ -1,14 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 if (!function_exists('send_sms')) {
 
-	function send_sms($to, $message = '', $msg_for = '',$user_id = '', $desig = ''){
+	function send_sms($to, $message = '', $msg_for = '',$user_id = '', $desig = '', $sender_id = ''){
 
 		$ci = &get_instance();
 		$path = 'uploads/';
 		
 		$ci->load->database();
 
-		$sender_id = "PHARMA";
+		
+		$sender_id =  !empty($sender_id) ? $sender_id : "PHARMA";
 		$provider = '';
 
 		switch($provider){
