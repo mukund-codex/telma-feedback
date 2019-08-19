@@ -207,9 +207,9 @@ class Mdl_doctor extends MY_Model {
 
 		$tiny_url = tiny_url($url);
 		
-		if(empty($tiny_url)){
+		/* if(empty($tiny_url)){
 			$tiny_url = $this->get_tiny_url($url);
-		}
+		} */
 
 		return $tiny_url;
 
