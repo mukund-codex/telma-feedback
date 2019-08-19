@@ -243,7 +243,6 @@ class Mdl_doctor extends MY_Model {
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
 	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-			print_r($errors);
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             
@@ -285,6 +284,8 @@ class Mdl_doctor extends MY_Model {
 		foreach ($data as $rows) {
 			$records['Doctor Name'] = $rows['name'];
 			$records['Doctor Mobile No.'] = $rows['mobile'];
+			$records['Original URL'] = $rows['original_url'];
+			$records['Tiny URL'] = $rows['tiny_url'];
 			$records['Date'] = $rows['insert_dt'];
 
 			array_push($resultant_array, $records);
