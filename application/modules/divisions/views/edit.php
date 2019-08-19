@@ -9,7 +9,7 @@
 
 <div class="form-group">
     <div class="form-line">
-        <input type="text" id="sender_id" name="sender_id" value="<?php echo $info[0]['sender_id']; ?>" class="form-control" autocomplete="off" placeholder="Sender Id." maxlength="10">
+        <input type="text" id="sender_id" name="sender_id" value="<?php echo $info[0]['sender_id']; ?>" class="form-control" autocomplete="off" placeholder="Sender Id." maxlength="6">
     </div>
 </div>
 

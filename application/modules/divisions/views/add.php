@@ -9,7 +9,7 @@
 <label class="form-label">Sender Id<span class="required">*</span></label>
 <div class="form-group">
     <div class="form-line">
-        <input type="tel" id="sender_id" name="sender_id" class="form-control" autocomplete="off" placeholder="Sender ID." maxlength="10">
+        <input type="text" id="sender_id" name="sender_id" class="form-control" autocomplete="off" placeholder="Sender ID." maxlength="6">
     </div>
 </div>
 
