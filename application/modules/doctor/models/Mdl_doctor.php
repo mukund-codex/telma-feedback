@@ -278,56 +278,6 @@ class Mdl_doctor extends MY_Model {
 
 	}
 
-	function download(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-			
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'D'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
-	function whatsapp(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'W'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
 	function _format_data_to_export($data){
 		
 		$resultant_array = [];

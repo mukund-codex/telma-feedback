@@ -32,6 +32,10 @@ class Cron_sms extends Generic_Controller
 			$division_name = $doctor->division_name;
 			$sender_id = $doctor->sender_id;
 
+			if(empty($tiny_url)) {
+				$tiny_url = $original_url;
+			}
+
 			if(empty($doctor_name) || empty($doctor_mobile) 
 				|| empty($original_url) || empty($tiny_url) ) 
 			{
@@ -46,7 +50,7 @@ class Cron_sms extends Generic_Controller
 			$sms_r .= "Regards, ".PHP_EOL;
 			$sms_r .= "Telma AM & Telma AMH".PHP_EOL;
 
-			//send_sms($doctor_mobile, $sms_r, 'Invitation', '', '', $sender_id);
+			send_sms($doctor_mobile, $sms_r, 'Invitation', '', '', $sender_id);
 		}
 
 		echo 'Success';
