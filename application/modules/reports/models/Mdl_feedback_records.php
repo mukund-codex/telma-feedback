@@ -138,7 +138,7 @@ class Mdl_feedback_records extends MY_Model {
             }else if($rows['question1'] == '7' || $rows['question1'] == '8'){
                 $answer1 = "Good";
             }else{
-                $answer1 = "Bad";
+                $answer1 = "Great";
             }
 
             if($rows['question2'] == '1'){ $answer2 = "Terrible"; }
