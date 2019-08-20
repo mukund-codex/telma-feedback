@@ -172,7 +172,9 @@ class Mdl_doctor extends MY_Model {
 		//$url = urlencode("localhost/quiz/redirect?id=".$key);
 		$url = base_url("feedback/redirect?id=$key");
 		
-		$tiny_url = $this->get_tiny_url($url);
+		$tiny_url = $this->get_bitly_url($url);
+		
+		//$tiny_url = $this->get_tiny_url($url);
 
 		$user_id = $this->session->get_field_from_session('user_id', 'user');
 		$data['insert_user_id'] = (int) $user_id;
@@ -206,6 +208,20 @@ class Mdl_doctor extends MY_Model {
 		$this->load->helper('tiny_url');
 
 		$tiny_url = tiny_url($url);
+		
+		/* if(empty($tiny_url)){
+			$tiny_url = $this->get_tiny_url($url);
+		} */
+
+		return $tiny_url;
+
+	}
+
+	function get_bitly_url($url){
+
+		$this->load->helper('bitly_url');
+
+		$tiny_url = bitly_url($url);
 		
 		/* if(empty($tiny_url)){
 			$tiny_url = $this->get_tiny_url($url);
