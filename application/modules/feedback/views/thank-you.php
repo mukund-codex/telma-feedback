@@ -57,7 +57,8 @@
     <div class="">
         <div class="row">
             <div class="col-md-12 text-center">
-                <p class="top-text">Thank you for your valuable time
+                <p><img style="width:50%;" src="<?php echo base_url('assets/images/thank-you.svg'); ?>"></p>
+                <p class="top-text">for your valuable time
                 </p>
                 <p class="text-center">Regards From Telma AM & Telma AMH</p>
             </div>

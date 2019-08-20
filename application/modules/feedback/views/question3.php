@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Feedback faces</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Feedback Face</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" />
+
     <script>
         function preventBack(){window.history.forward();}
         setTimeout("preventBack()", 0);
@@ -15,7 +17,7 @@
 <body>
     <style>
         p.top-text {
-            font-size: 35px;
+            font-size: 1.5rem;
             margin-top: 5em;
         }
         
@@ -25,7 +27,7 @@
         }
         
         .emoji-text {
-            font-size: 35px;
+            font-size: 1.5rem;
             font-weight: 700;
             font-family: sans-serif;
         }
@@ -33,10 +35,11 @@
         .btn.btn-success {
             padding: 10px 27px;
             font-size: 25px;
+            width:100%;
         }
         
         p.letter {
-            font-size: 75px;
+            font-size: 1.5rem;
             display: inline;
             padding: 40px 75px;
             font-weight: 900;
@@ -59,10 +62,10 @@
             <div class="col-md-12 text-center mt-5">
                 <p class="top-text">Would you like to have full text of the daily alerts?</p>
             </div>
-            <div class="col-md-6 text-center mt-5">
+            <div class="col-6 text-center mt-5">
                 <p class="letter">Y</p>
             </div>
-            <div class="col-md-6 text-center mt-5">
+            <div class="col-6 text-center mt-5">
                 <p class="letter">N</p>
             </div>
             <?php $attrubiutes = array('id' => 'addForm');

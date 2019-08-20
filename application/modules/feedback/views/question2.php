@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Feedback faces</title>
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Feedback Face</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" />
-
 
 </head>
 
@@ -15,21 +16,24 @@
             list-style-type: none;
             display: flex;
             margin-left: -45px;
-            margin-top: 10em;
+            margin-top: 4em;
         }
         
         p.top-text {
-            font-size: 35px;
-            margin-top: 7em;
+            font-size: 1.5rem;
+            margin-top: 3em;
         }
         
         .emoji-list li {
             padding: 0 18px;
             min-height: 200px;
         }
+        .emoji-list li img{
+            max-width:100%;
+        }
         
         .emoji-text {
-            font-size: 35px;
+            font-size: 1.5rem;
             font-weight: 700;
             font-family: sans-serif;
         }
@@ -37,6 +41,7 @@
         .btn.btn-success {
             padding: 10px 27px;
             font-size: 25px;
+            width:100%;
         }
     </style>
     <!-- partial:index.partial.html -->
@@ -61,7 +66,7 @@
                     <input type="hidden" name="answer" id="answer" value="" />
                     <input type="hidden" name="question" id="question" value="question2" >
                 <?php echo form_close(); ?>
-            <div class="col-md-12 text-right" id="next" style="display:none;">
+            <div class="col-md-12" id="next" style="display:none;">
                 <button class="btn btn-success" name="next" id="next-button" onclick="next();">Next</button>
                <!--  <a href="<?php echo base_url('feedback/question3/') ?>" class="btn btn-success"> Next </a> -->
             </div>

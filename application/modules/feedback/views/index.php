@@ -1,14 +1,17 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Scale</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" />
 
 </head>
+ 
 
+ 
 <body>
     <style>
         #pointer {
@@ -35,14 +38,15 @@
         .btn.btn-success {
             padding: 10px 27px;
             font-size: 25px;
+            width:100%;
         }
         /* WebKit and Opera browsers */
     </style>
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h3 class="mt-5">How Likely are you to recommend us in sharing therapy related scientific information on daily basic</h3>
-                <svg class="us" width="90%" height="80%" viewBox="0 0 320 159" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <h4 class="mt-5">How Likely are you to recommend us in sharing therapy related scientific information on daily basic</h4>
+                <svg class="us" width="90%" height="50%" viewBox="0 0 320 159" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path  data-set="vector" data-pointer="1" data-deg="-90deg" fill-rule="evenodd" clip-rule="evenodd" d="M0 158.735L63.8722 158.754C63.9461 152.746 64.5743 144.391 65.96 138.587C66.311 137.182 67.3827 133.559 67.2533 132.357L7.29809 112.911C6.22648 115.203 4.97009 120.656 4.36038 123.244C1.64438 134.908 0.129333 146.461 0 158.735Z" fill="#513737"/>
                     <path d="M33.0601 147H30.9434V138.841L28.4165 139.625V137.903L32.833 136.321H33.0601V147Z" fill="white"/>
                     <path  data-set="vector"  data-pointer="2" data-deg="-71deg" fill-rule="evenodd" clip-rule="evenodd" d="M8.04306 109.325C9.74287 110.194 13.2718 111.1 15.3781 111.784C17.9833 112.615 20.496 113.447 22.9903 114.261L66.1507 128.328C69.6242 129.492 67.6472 127.921 73.264 116.22C74.1878 114.316 75.3333 112.283 76.3126 110.601C76.9223 109.51 79.472 105.776 79.5829 104.833C78.8623 103.946 74.2432 100.878 73.1162 100.046C71.8044 99.0661 66.2246 95.48 66.2246 95.48L66.2556 95.5L65.3806 95C65.1774 94.7597 64.6931 94.5 64.6931 94.5L33.9097 71.5606C32.6903 70.6733 30.3438 68.64 28.8103 68.1594C28.2375 69.3979 26.6486 71.4497 25.8172 72.7067C22.6577 77.5127 19.8678 82.2264 17.2257 87.4206C15.064 91.6721 8.57887 105.443 8.04306 109.325Z" fill="#784E48"/>
@@ -76,12 +80,12 @@
                     <input type="hidden" name="question" id="question" value="question1" >
                 <?php echo form_close(); ?>
 
-                <div id="status" style="min-height: 145px;"></div>
-                <h3 class="text-center">Thank you for your valuable time Regards From Telma AM & Telma AMH</h3>
+                <div id="status"></div>
+                <button class="btn btn-success mt-5" name="next" id="next-button" onclick="next();" style="display:none;">Next</button>
 
             </div>
-            <div class="col-md-12 text-right" id="next" style="display:none;">
-                <button class="btn btn-success" name="next" id="next-button" onclick="next();">Next</button>
+            <div class="col-md-12" id="next" style="display:none;">
+                <!-- <button class="btn btn-success" name="next" id="next-button" onclick="next();">Next</button> -->
                 <!-- <a href="<?php echo base_url('feedback/question2/') ?>" class="btn btn-success" onclick="next();"> Next </a> -->
             </div>
         </div>
@@ -99,10 +103,10 @@
             $('#status').html("");
             $('#pointer').removeClass();
             $('#pointer').css('transform', 'rotate(' + deg + ')')
-            $('#pointer').addClass("pointer" + val);
+            $('#pointer').addClass("pointer" + val);  
             emoji(val);
             $("#answer").val(val);
-            $("#next").show();
+            $("#next-button").show();
         });
 
         function emoji(point) {
