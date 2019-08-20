@@ -1,4 +1,49 @@
 <div class="body table-responsive">
+
+<?php if(in_array('addSMSbalance', $permissions)) : ?>
+<div class="block-header">
+	<h2>SMS USAGE</h2>
+</div>
+<div class="row clearfix">
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-zoom-effect">
+			<div class="icon bg-deep-orange">
+				<i class="material-icons">email</i>
+			</div>
+			<div class="content">
+				<div class="text">TOTAL SMS</div>
+				<div class="number"><?= number_format($total_balance[0]->balance); ?></div>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-zoom-effect">
+			<div class="icon bg-blue">
+				<i class="material-icons">email</i>
+			</div>
+			<div class="content">
+				<div class="text">SMS REMAINING</div>
+				<div class="number"><?= number_format($sms_balance); ?></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box hover-expand-effect">
+			<div class="icon bg-teal">
+				<i class="material-icons">equalizer</i>
+			</div>
+			<div class="content">
+				<div class="text">SMS USAGE</div>
+				<div class="number"><?= number_format($total_balance[0]->balance - $sms_balance) ?></div>
+			</div>
+		</div>
+	</div>
+		
+</div>
+<?php endif; ?>
+
 <?php if(isset($date_filters) && $date_filters): ?>
 <div class="row clearfix">
     <div class="col-md-2">

@@ -6,7 +6,7 @@ class Sms extends Admin_Controller
 	private $model_name = 'mdl_sms';
 	private $csv_fields;
 	private $settings = [
-        'permissions'=> ['download'],
+        'permissions'=> ['addSMSbalance','download'],
     ];
 
 	function __construct() {

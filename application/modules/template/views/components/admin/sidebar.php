@@ -62,6 +62,7 @@
                         <li <?php echo ($menu == 'sms') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("sms/lists?t=$timestamp") ?>">SMS Log</a>
                         </li>
+                        
                     </ul>
                 </li>
 

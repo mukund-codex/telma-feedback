@@ -8,6 +8,10 @@
             <li><a href="<?php echo base_url("$controller/add") ?>">Add <?= ucfirst($module_title) ?></a></li>
             <?php endif; ?>
 
+            <?php if(in_array('addSMSbalance', $permissions)) : ?>
+            <li><a href="<?php echo base_url("$controller/addSmsBalance") ?>">Add <?= ucfirst($module_title) ?></a></li>
+            <?php endif; ?>
+
             <?php if(in_array('upload', $permissions)) : ?>
             <li><a href="#" id="import" data-toggle="modal" data-target="#uploadbox" title="Upload CSV">Upload CSV</a></li>
             <?php endif; ?>
