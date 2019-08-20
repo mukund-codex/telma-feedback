@@ -171,12 +171,15 @@ class Mdl_scheduledsms extends MY_Model {
 			
 			$smsnewdate = date("Y-m-d H:i:00",strtotime($smsDate.' + 2 minute'));				
 
-			$records = $this->get_records(['division_id'=> $division_id,'sms_date_time like'=>"$smsnewdateforchk%"], 'sms_data', ['sms_data_id']);
+			$records = $this->get_records(['division_id'=> $division_id,'sms_date_time like'=>"$smsnewdate%"], 'sms_data', ['sms_data_id']);
 
 			if(count($records) > 0) {
 
-				$response['msg'] = 'SMS Already scheduled for the Division selected on the date selected'; // Some might be empty
-	        	$response['status'] = FALSE;
+				$response['errors'] = [
+					'message' => '<label class="error">SMS Already scheduled for the Division selected on the date selected. </label>'
+				]; // Some might be empty
+				$response['status'] = FALSE;
+				
 				
 			} else {
 
