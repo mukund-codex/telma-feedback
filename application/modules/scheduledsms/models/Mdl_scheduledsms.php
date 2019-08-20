@@ -139,7 +139,7 @@ class Mdl_scheduledsms extends MY_Model {
 			$this->form_validation->set_rules('sms_date', 'SMS Date', 'trim|required');
 		}
 		
-		$this->form_validation->set_rules('message','Message','trim|max_length[128]|required|xss_clean');
+		$this->form_validation->set_rules('message','Message','trim|max_length[350]|required|xss_clean');
 
 		if(!$this->form_validation->run()) {
 

@@ -33,8 +33,8 @@
 	<label class="form-label">Message</label>
 	<div class="form-group">
 		<div class="form-line">
-			<textarea  name="message" placeholder="Write Here..." onkeydown="limitTextOnKeyUpDown(this.form.message,this.form.countdown,128);" onkeyup='limitTextOnKeyUpDown(this.form.message,this.form.countdown,128);' class="form-control" ></textarea>
-			You have <input readonly type="text" name="countdown" size="3" value="128"> chars left<br/>	
+			<textarea  name="message" placeholder="Write Here..." onkeydown="limitTextOnKeyUpDown(this.form.message,this.form.countdown,350);" onkeyup='limitTextOnKeyUpDown(this.form.message,this.form.countdown,350);' class="form-control" ></textarea>
+			You have <input readonly type="text" name="countdown" size="3" value="350"> chars left<br/>	
 		</div>
 	</div>
 
