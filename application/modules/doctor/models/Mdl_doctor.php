@@ -53,7 +53,7 @@ class Mdl_doctor extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('d.*, div.*')
+        $q = $this->db->select('d.*, div.division_id, div.division_name, div.sender_id')
         ->from('doctor d')
         ->join('divisions div','d.division_id = div.division_id','left');
 		if(sizeof($sfilters)) { 
