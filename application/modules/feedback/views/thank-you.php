@@ -12,7 +12,7 @@
     <style>
         p.top-text {
             font-size: 75px;
-            font-family: 'redressed';
+            /* font-family: 'redressed'; */
         }
         
         .emoji-list li {
@@ -58,8 +58,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <p><img style="width:50%;" src="<?php echo base_url('assets/images/thank-you.svg'); ?>"></p>
-                <p class="top-text">for your valuable time
-                </p>
+                <p class="top-text">For your valuable time.</p>
                 <p class="text-center">Regards From Telma AM & Telma AMH</p>
             </div>
 

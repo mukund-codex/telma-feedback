@@ -12,7 +12,7 @@
     <style>
         p.top-text {
             font-size: 75px;
-            font-family: 'redressed';
+            /* font-family: 'redressed'; */
         }
         
         .emoji-list li {
@@ -57,8 +57,7 @@
     <div class="">
         <div class="row">
             <div class="col-md-12 text-center">
-                <p class="top-text">Feedback Already Submitted.
-                </p>
+                <p class="text-center" style="font-size:65px;">Feedback Already Submitted.</p>
                 <p class="text-center">Regards From Telma AM & Telma AMH</p>
             </div>
 
