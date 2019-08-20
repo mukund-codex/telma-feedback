@@ -119,7 +119,9 @@ class Feedback extends Admin_Controller
 		$data['id'] = $id = $feedback_records[0]->doctor_id;
 
 		if(!empty($id)){
-			show_404();
+			//$this->set_view('submitted');
+			$this->load->view('submitted');
+			return;
 		}
 
 		$this->set_view($data, 'index');
