@@ -196,10 +196,12 @@ class Mdl_admin extends MY_Model {
 		}
 
 		$user_id = (int) $this->input->post('user_id');
-
+		
 		if($data['password']) {
 			$oldHash = $is_Available['data'][0]->password;
 			$data['password'] = Encryption::encryptPassword($data['password']);
+		}else{
+			unset($data['password']);
 		}
 
 		$status = $this->_update([$this->p_key => $user_id], $data);
