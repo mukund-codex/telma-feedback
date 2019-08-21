@@ -1,5 +1,6 @@
 <?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { ?>
 <tr>
+    <td><?php echo $record['division_name'] ?></td> 
     <td><?php echo $record['name'] ?></td>  
     <td><?php echo $record['mobile'] ?></td>  
     <td><?php if($record['question1']=='1' || $record['question1']=='2'){ echo "Terrible"; }

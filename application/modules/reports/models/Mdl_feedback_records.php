@@ -35,9 +35,10 @@ class Mdl_feedback_records extends MY_Model {
 
     function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('d.*, f.*')
+        $q = $this->db->select('d.*, f.*, div.*')
         ->from('doctor d')
         ->join('feedback f','f.doctor_id = d.doctor_id', 'left')
+        ->join('divisions div','d.division_id = div.division_id','left')
         ->where('f.complete_status','1');
 		if(sizeof($sfilters)) { 
             
@@ -149,6 +150,7 @@ class Mdl_feedback_records extends MY_Model {
             
             $answer3 = ($rows['question3'] == 'Y' ? "Yes" : "No");
 
+            $records['Division Name'] = $rows['division_name'];
 			$records['Doctor Name'] = $rows['name'];
             $records['Doctor Mobile'] = $rows['mobile'];
 			$records['How Likely are you to recommend us in sharing therapy related scientific information on daily basic?'] = $answer1;
