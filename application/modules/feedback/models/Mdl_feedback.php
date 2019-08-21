@@ -138,7 +138,7 @@ class Mdl_feedback extends MY_Model {
 					return $response;
 				} 
 
-				if(!preg_match(FILTER_VALIDATE_EMAIL, $this->input->post('email_id')) || strlen($this->input->post('email_id')) > 100) {
+				if(!filter_var($this->input->post('email_id'), FILTER_VALIDATE_EMAIL) || strlen($this->input->post('email_id')) > 100) {
 					$response['errors'] = ['email_id' => '<label class="error" style="color:red;">Invalid Email Format.</label>'];
 					$response['status'] = FALSE;
 					return $response;
