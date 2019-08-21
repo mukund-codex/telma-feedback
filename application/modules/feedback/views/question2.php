@@ -85,7 +85,6 @@
                 $(this).css('transform', 'scale(1.3)');
                 $('.emoji-text').html('');
                 $('.emoji-text').html(emoji);
-                console.log(rate);
                 $("#answer").val(rate);
                 $("#next").show();
             });

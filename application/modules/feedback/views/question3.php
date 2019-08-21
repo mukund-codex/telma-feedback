@@ -68,13 +68,16 @@
             <div class="col-6 text-center mt-5">
                 <p class="letter">N</p>
             </div>
-            <?php $attrubiutes = array('id' => 'addForm');
+            <div class="col-md-12 text-center mt-5">
+                <?php $attrubiutes = array('id' => 'addForm');
                 echo form_open('feedback/save', $attrubiutes); ?>
+                    <input type="email" name="email_id" class="form-control" autocomplete="off" maxlength="100" id="email" placeholder = "Email ID" style="display:none;">
                     <input type="hidden" name="doctor_id" id="doctor_id" value="<?php echo $doctor_id; ?>" >
                     <input type="hidden" name="answer" id="answer" value="" />
                     <input type="hidden" name="question" id="question" value="question3" >
                 <?php echo form_close(); ?>
-            <div class="col-md-12 text-center mt-5" id="next" style="display:none;">
+            </div>
+            <div class="col-md-12 text-center mt-3" id="next" style="display:none;">
                 <button class="btn btn-success" name="next" id="next-button" onclick="next();">Submit</button>
                 <!-- <a href="<?php echo base_url('feedback/thank_you/') ?>" class="btn btn-success"> Submit </a> -->
             </div>
@@ -90,7 +93,13 @@
                 $('p.letter').removeClass('selected');
                 $(this).addClass('selected');
                 var rate = $(this).text();
-                console.log(rate);
+                if(rate == 'Y'){
+                    $("#email").show();
+                }else{
+                    $("#email").val('');
+                    $("#email").hide();
+                    $('label.error').hide();
+                }
                 $("#answer").val(rate);
                 $("#next").show();
             });
@@ -101,8 +110,17 @@
             if(answer == ''){
                 location.reload();
             }
+
+            var formObj = $('#addForm');
+            $.each(formObj.find('input, select, textarea'), function (i, field) {
+                var elem = $('[name="' + field.name + '"]');
+
+                elem.removeClass('error')
+                    .next('label.error').remove();
+            });
+
+
             var url = $('#addForm').attr('action');
-            console.log(url);
             $.ajax({
                 type: "POST",
                 url: url, 
@@ -111,8 +129,21 @@
                 cache:false,
                 success: function (response) {
                     if (response.status) {
-					window.location.href = (response.redirectTo) ? response.redirectTo : '';
-				    }
+					    window.location.href = (response.redirectTo) ? response.redirectTo : '';
+                    }
+                    if (response.errors) {
+                            $.each(response.errors, function (key, val) {
+                                var elem = $('[name="' + key + '"]', $('#addForm'));
+                                
+                                elem.removeClass('error')
+                                    .next('label.error').remove()
+                                    .end()
+                                    .addClass('error').after(val);
+                                
+
+                            });
+
+                        }
                 }
             });
         }

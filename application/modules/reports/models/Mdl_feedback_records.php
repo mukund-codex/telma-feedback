@@ -153,7 +153,8 @@ class Mdl_feedback_records extends MY_Model {
             $records['Doctor Mobile'] = $rows['mobile'];
 			$records['How Likely are you to recommend us in sharing therapy related scientific information on daily basic?'] = $answer1;
             $records['Kindly rate us on quality of science information?'] = $answer2;
-			$records['Would you like to have full text of the daily alerts?'] = $answer3;
+            $records['Would you like to have full text of the daily alerts?'] = $answer3;
+            $records['Email ID'] = $rows['email_id'];
 			$records['Date'] = $rows['insert_dt'];
 			array_push($resultant_array, $records);
 		}

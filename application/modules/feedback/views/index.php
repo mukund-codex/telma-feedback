@@ -99,7 +99,6 @@
         allStates.on("click", function() {
             var val = $(this).attr('data-pointer');
             var deg = $(this).attr('data-deg');
-            console.log(val);
             $('#status').html("");
             $('#pointer').removeClass();
             $('#pointer').css('transform', 'rotate(' + deg + ')')
@@ -134,7 +133,6 @@
                 location.reload();
             }
             var url = $('#addForm').attr('action');
-            console.log(url);
             $.ajax({
                 type: "POST",
                 url: url, 

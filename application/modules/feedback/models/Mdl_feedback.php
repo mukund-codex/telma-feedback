@@ -103,103 +103,63 @@ class Mdl_feedback extends MY_Model {
 		if($type == 'save') {
 			return [
                 [
-					'field' => 'code',
-					'label' => 'Code',
-					'rules' => 'trim|required|valid_mobile|unique_record[add.table.bunch.code.' . $this->input->post('code') .']|xss_clean'
+					'field' => 'question',
+					'label' => 'Question',
+					'rules' => 'trim|required|in_list[question1,question2,question3]|xss_clean'
 				]
 			];
 		}
 
-		if($type == 'modify') {
-			return [
-                [
-					'field' => 'doctor_mobile',
-					'label' => 'Doctor Mobile No.',
-					'rules' => 'trim|required|valid_mobile|unique_record[edit.table.bunch.code.' . $this->input->post('code'). '.doctor_id.'. $this->input->post('id') .']|xss_clean'
-                ]
-			];
-		}
     }
 
-	function preview(){
+	function save(){
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules($this->validate('save'));
-
-		$doctor_photo = $this->input->post('imageName');
-		
-		if(! $this->form_validation->run() || empty($doctor_photo) || !file_exists("uploads/doctors/$doctor_photo")){
+		$this->form_validation->set_message('in_list', 'Invalid {field} value.');
+		if(! $this->form_validation->run()){
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
-				$errors[$key] = form_error($key, '<label class="error">', '</label>');
+				$errors[$key] = form_error($key, '<label class="error" style="color:red;">', '</label>');
 				
-			if(empty($doctor_photo) || !file_exists("uploads/doctors/$doctor_photo")) {
-				$errors['doctor_photo'] = '<label class="error" style="width: fit-content">File Required</label';
-			}
-	        
 	        $response['errors'] = array_filter($errors); // Some might be empty
             $response['status'] = FALSE;
             
             return $response;
 		}
-
-		list($width, $height, $type, $attr) = getimagesize("uploads/doctors/$doctor_photo");
-		if($width < 600) {
-			$response['errors'] = [
-				'doctor_photo' => '<label class="error">Please Upload Good Quality Image</label'
-			];
-            $response['status'] = FALSE;
-            return $response;
-		}
-	
-		$data = $this->process_data($this->fillable, $_POST);
-		
-		$user_id = $this->session->get_field_from_session('user_id', 'user');
-		$data['insert_user_id'] = (int) $user_id;
-		
-		// Crop Image
-		$imageName = $this->input->post('imageName');
-		$x1 = (int) $this->input->post('x1');
-		$y1 = (int) $this->input->post('y1');
-		$x2 = (int) $this->input->post('x2');
-		$y2 = (int) $this->input->post('y2');
-		
-		if($x2 <= 0 || $y2 <= 0) {
-			$response['errors'] = [
-				'doctor_photo' => '<label class="error">No Image Area Selected</label'
-			];
-            $response['status'] = FALSE;
-            return $response;
-		}
-
-        $image_crop = $this->image_crop($imageName, $x1, $y1, $x2, $y2);
-		if(!empty($image_crop)) {
-			$data['photo'] = $image_crop;
-		}
-		// END
-
-		$this->load->model('poster/mdl_poster', 'poster');
-		$doctor_poster = $this->poster->generate($this->input->post(), $image_crop);
-
-        $response['status'] = TRUE;
-		$response['popup'] = TRUE;
-		$response['image'] = base_url($doctor_poster);
-        return $response;
-	}
-
-	function save(){
-
 		$question = $this->input->post('question');
 		$data['doctor_id'] = (int) $this->input->post('doctor_id');
 		$data[$question] = $this->input->post('answer');
+
+		if($question == 'question3'){ 
+			if(strtoupper($data[$question]) === 'Y') {
+				if(empty($this->input->post('email_id'))) {
+					$response['errors'] = ['email_id' => '<label class="error" style="color:red;">This field is required.</label>'];
+					$response['status'] = FALSE;
+					return $response;
+				} 
+
+				if(!preg_match(FILTER_VALIDATE_EMAIL, $this->input->post('email_id')) || strlen($this->input->post('email_id')) > 100) {
+					$response['errors'] = ['email_id' => '<label class="error" style="color:red;">Invalid Email Format.</label>'];
+					$response['status'] = FALSE;
+					return $response;
+				}
+
+			}
+			
+		}
 		
-		$feedback_record = $this->model->get_records(['doctor_id'=> $data['doctor_id']], 'feedback', [], '', 1);
+		$feedback_record = $this->model->get_records(['doctor_id'=> $data['doctor_id'], 'complete_status' => 0], 'feedback', [], '', 1);
 		$doctor_id = $feedback_record[0]->doctor_id;
 		
 		if(empty($doctor_id)){
 			$id = $this->_insert($data, 'feedback');
 		}else{
-			$data['complete_status'] = 1;
-			$id = $this->_update(['doctor_id' => $doctor_id], $data, 'feedback');
+			if($question == 'question3'){ 
+				$data['complete_status'] = 1; 
+				$data['email_id'] = $this->input->post('email_id'); 
+			}
+			
+			$id = $this->_update(['doctor_id' => $doctor_id,'complete_status' => 0], $data, 'feedback');
 		}		
 	
         if(! $id){
@@ -220,114 +180,6 @@ class Mdl_feedback extends MY_Model {
         return $response;
 	}
 	
-	function image_crop($image, $x_axis, $y_axis, $width, $height, $new_image_name = '')
-	{
-		$this->load->library('Image');  
-
-		$image_path = "uploads/doctors/$image";
-		$file_name = pathinfo($image_path, PATHINFO_FILENAME);
-		$new_image_name = ($new_image_name) ? $new_image_name.'-crop.png' : $file_name.'-crop.png';
-
-		if(!file_exists("uploads/doctors/thumbs")) {
-			mkdir("uploads/doctors/thumbs", 0755, true);
-		}
-
-		$new_file_path = "uploads/doctors/thumbs/$new_image_name";
-        $imageObj = new Image("uploads/doctors/$image");
-        $imageObj->crop($x_axis, $y_axis, $width, $height);
-		$imageObj->save($new_file_path);
-		return file_exists($new_file_path) ? $new_file_path : '';
-	}
-	
-	function modify(){
-		/*Load the form validation Library*/
-		$this->load->library('form_validation');
-
-		/* $is_Available = $this->check_for_posted_record($this->p_key, $this->table);
-		if(! $is_Available['status']){ return $is_Available; } */
-		
-		/* $this->form_validation->set_rules($this->validate('modify')); */
-
-		/* if(! $this->form_validation->run() ){
-			$errors = array();	        
-	        foreach ($this->input->post() as $key => $value)
-	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-
-	        $response['errors'] = array_filter($errors); // Some might be empty
-            $response['status'] = FALSE;
-            
-            return $response;
-		}	 */	
-		
-        $data = $this->process_data($this->fillable, $_POST);
-		
-		$p_key = $this->p_key;
-		$id = (int) $this->input->post($p_key);
-		
-        $status = (int) $this->_update([$p_key => $id], $data);
-        
-        if(! $status){
-			$response['message'] = 'Internal Server Error';
-			$response['status'] = FALSE;
-			return $response;
-		}
-
-		$response['status'] = TRUE;
-        $response['message'] = 'Congratulations! record was updated.';
-        
-        return $response;
-	}
-
-	function download(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-			
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'D'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
-	function whatsapp(){
-
-		if(isset($_POST['id'])){
-			$doctor_id = (int) $this->input->post('id');
-			$insert_user_id = $this->session->get_field_from_session('user_id','user');
-
-			if(!$doctor_id || !$insert_user_id) {
-				return;
-			}
-
-			$response = $this->_insert(
-				[
-					'doctor_id'=> $doctor_id, 
-					'insert_user_id'=> $insert_user_id,
-					'share_type'=> 'W'
-				], 
-				'shared');
-
-			$status = ($response) ? TRUE : FALSE;
-			return ['status'=> TRUE];
-		}
-
-		return ['msg'=> 'Permission Denied!', 'status'=> FALSE ];
-	}
-
 	function _format_data_to_export($data){
 		
 		$resultant_array = [];

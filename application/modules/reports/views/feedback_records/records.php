@@ -11,7 +11,8 @@
     else if($record['question2'] =='3'){ echo "Okay"; }
     else if($record['question2'] =='4'){ echo "Good"; }
     else if($record['question2'] =='5'){ echo "Great"; } ?></td>   
-    <td><?php if($record['question3']== 'Y') { echo 'Yes'; }else{ echo 'No'; } ?></td>   
+    <td><?php if($record['question3']== 'Y') { echo 'Yes'; }else{ echo 'No'; } ?></td>
+    <td><?php echo $record['email_id'] ?></td>   
     <td><?php echo $record['insert_dt'] ?></td>    
 </tr>
 <?php $i++;  } ?>
