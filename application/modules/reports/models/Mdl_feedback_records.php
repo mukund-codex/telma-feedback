@@ -35,7 +35,7 @@ class Mdl_feedback_records extends MY_Model {
 
     function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('d.*, f.*, div.*')
+        $q = $this->db->select('d.*, f.*, div.division_name, div.sender_id')
         ->from('doctor d')
         ->join('feedback f','f.doctor_id = d.doctor_id', 'left')
         ->join('divisions div','d.division_id = div.division_id','left')
