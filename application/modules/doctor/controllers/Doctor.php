@@ -137,7 +137,7 @@ class Doctor extends User_Controller
 			$key = $this->model->random_strings(10);
 			$url = base_url("feedback/redirect?id=$key");
 		
-			$tiny_url = $this->model->get_tiny_url($url);
+			$tiny_url = $this->model->get_bitly_url($url);
 
 			$insert = [];
 			
