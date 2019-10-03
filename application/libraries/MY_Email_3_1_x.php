@@ -293,6 +293,7 @@ class MY_Email extends CI_Email {
 
                /*  list($key, $name) = each($names);
                 $this->phpmailer->addAddress($address, $name); */
+                $this->phpmailer->addAddress($address, '');
             }
 
         } else {
