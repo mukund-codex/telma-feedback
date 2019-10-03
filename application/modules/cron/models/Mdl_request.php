@@ -38,23 +38,28 @@ class Mdl_request extends MY_Model {
         echo $this->db->get_compiled_select(); die();
         $collection = $q->get()->result_array();
 		return $collection;
+	}	
+
+	function is_mail_cron_active(){
+		$cron_record = $this->get_records(['status'=> 1], 'email_cron_status', ['status']);
+		return (count($cron_record)) ? TRUE : FALSE;
 	}
 
-	function get_doctors_articles($sfilters = [], $limit = 0, $offset = 0){
+	function get_email_data($sfilters = [], $limit = 0, $offset = 0){
 		$q = $this->db->select('
-			sd.sms_data_id, 
-		    dr.doctor_id, dr.name as doctor_name, dr.mobile as doctor_mobile, di.division_id,
-			di.division_name as division_name, di.sender_id as sender_id,
-			fd.question3, fd.email_id as doctor_email, 
-			ar.title as article_title, ar.file as file, 
-			ar.original_url as original_url, ar.short_url as short_url
+			ed.email_data_id, 
+		    di.division_name as division_name, di.sender_id as sender_id, 
+			dr.doctor_id as doctor_id, dr.name as doctor_name, dr.mobile as doctor_mobile,
+			ar.title as article_title, ar.`file`, ar.original_url, ar.short_url,
+			fd.question3, fd.email_id as doctor_email
 		')
-		->from('doctor dr')
-		->join('divisions di', 'di.division_id = dr.division_id')
-		->join('feedback fd', 'fd.doctor_id = dr.doctor_id', 'LEFT')
-		->join('sms_data sd', 'sd.division_id = di.division_id', 'LEFT')
-		->join('article ar', 'ar.article_id = sd.article_id')
-		->group_by('dr.doctor_id');
+		->from('email_data ed')
+		->join('divisions di', 'di.division_id = ed.division_id')
+		->join('article ar', 'ar.article_id = ed.article_id')
+		->join('doctor dr', 'ON dr.division_id = ed.division_id')
+		->join('feedback fd', 'fd.doctor_id = dr.doctor_id')
+		->where('fd.question3', 'Y')
+		->where('fd.email_id IS NOT' ,'NULL', FALSE);
 
 		if(sizeof($sfilters)) { 
             

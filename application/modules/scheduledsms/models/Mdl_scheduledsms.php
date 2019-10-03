@@ -196,7 +196,13 @@ class Mdl_scheduledsms extends MY_Model {
 				$data['message'] 	= $message;
 				$data['sms_date_time']  = $smsnewdate;						
 
+				$articledata['division_id'] = $division_id;
+				$articledata['article_id'] = $article_id;
+
 				$sms_data_id = $this->_insert($data);
+
+				$email_data_id = $this->_insert($articledata, 'email_data');
+
 				$response['status'] = TRUE;
 			}		
 		}

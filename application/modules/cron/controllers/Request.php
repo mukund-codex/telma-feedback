@@ -68,20 +68,33 @@ class Request extends Generic_Controller{
         $this->load->helper('send_email');
         $this->load->helper('send_sms');
 
-        $records = $this->model->get_doctors_articles();
+        $is_cron_active = $this->model->is_mail_cron_active();
+
+        if($is_cron_active){
+            echo 'Email Sending already in progress'; 
+            die();
+        }
+
+        $records = $this->model->get_email_data();
 
         if(empty($records)){
             echo 'No Records Found.'; 
             die();
         }
 
-        
+        $update = $this->model->_update(['status'=> 0], ['status'=> 1], 'sms_cron_status'); 
+
+        if(!$update){
+            echo 'Unable to start the cron, please check the conditions'; 
+            die();
+        }
+
         foreach($records as $key => $values){
             $content = "";
             $message = "";
             
             $data = [];
-            $sms_data_id = $values['sms_data_id'];
+            $email_data_id = $values['email_data_id'];
             $data['doctor_id'] = $values['doctor_id'];
             $division_name = $sms_type = $values['division_name'];
             $sender_id = $values['sender_id'];
@@ -99,29 +112,15 @@ class Request extends Generic_Controller{
             $content .= "Dear $doctor_name,";
 
             $data['content'] = $content;
-
-            if($doctor_want_article == 'yes'){
                 
-                $email = send_email([$doctor_email], $subject, $content, [$article_file]);
+            $email = send_email([$doctor_email], $subject, $content, [$article_file]);
+            
+            $data['is_success'] = ($email) ?? 0;
+
+            $insert = $this->model->_insert($data, 'email_log');
+            
+            $update = $this->model->_update(['email_data_id' => $email_data_id], ['is_processed' => 1], 'email_data');
                 
-                $data['is_success'] = ($email) ?? 0;
-
-                $insert = $this->model->_insert($data, 'email_log');
-                
-            }else{
-
-                $message .= "Dear $doctor_name,".PHP_EOL;
-                $message .= "Link to access full article : ".$short_url;
-
-                $sms_status = send_sms($doctor_mobile, $message, $sms_type, '', '', $sender_id);
-                    
-                if($sms_status){
-                    $update = $this->model->_update(['sms_data_id' => $sms_data_id], ['is_processed' => 1], 'sms_data');
-                }else{
-                    echo 'SMS sending failed for ' . $sms_data_id;
-                }
-            }            
-
         }
 
         echo "Success";
