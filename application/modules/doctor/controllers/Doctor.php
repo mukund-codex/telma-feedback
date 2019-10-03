@@ -127,7 +127,7 @@ class Doctor extends User_Controller
 				continue;
 			} */
 
-			$record = $this->model->get_or_records(['name'=> $doctor_name, 'mobile' => $doctor_mobile], 'doctor', ['key'], '', 1);
+			$record = $this->model->get_records(['mobile' => $doctor_mobile], 'doctor', ['key'], '', 1);
 			if(count($record)) {
 				continue;
 			}

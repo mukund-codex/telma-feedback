@@ -118,7 +118,7 @@ class Mdl_doctor extends MY_Model {
                 [
 					'field' => 'mobile',
 					'label' => 'Doctor Mobile No.',
-					'rules' => 'trim|required|exact_length[10]|valid_mobile|unique_record[add.table.doctor.mobile.' . $this->input->post('mobile') .']|xss_clean'
+					'rules' => 'trim|required|exact_length[10]|valid_mobile[add.table.doctor.mobile.' . $this->input->post('mobile') .']|xss_clean'
 				],
 				[
 					'field' => 'division_id',
@@ -139,7 +139,7 @@ class Mdl_doctor extends MY_Model {
                 [
 					'field' => 'mobile',
 					'label' => 'Doctor Mobile No.',
-					'rules' => 'trim|required|exact_length[10]|valid_mobile|unique_record[edit.table.doctor.mobile.' . $this->input->post('mobile'). '.doctor_id.'. $this->input->post('doctor_id') .']|xss_clean'
+					'rules' => 'trim|required|exact_length[10]|valid_mobile[edit.table.doctor.mobile.' . $this->input->post('mobile'). '.doctor_id.'. $this->input->post('doctor_id') .']|xss_clean'
                 ],
 				[
 					'field' => 'division_id',
