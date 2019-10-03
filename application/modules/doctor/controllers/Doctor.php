@@ -82,6 +82,8 @@ class Doctor extends User_Controller
 		$file = $_FILES['csvfile']['tmp_name'];
 		$handle = fopen($file, "r");
 		$cnt = 0; $newrows = 0;
+
+		$doctor = [];
         
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE){
             
@@ -133,10 +135,11 @@ class Doctor extends User_Controller
 			}
 
 			$key = $this->model->random_strings(10);
-
 			$url = base_url("feedback/redirect?id=$key");
 		
 			$tiny_url = $this->model->get_tiny_url($url);
+
+			$insert = [];
 			
 			$insert['division_id'] = $division_id;
             $insert['name'] = $doctor_name;
@@ -144,18 +147,14 @@ class Doctor extends User_Controller
             $insert['key'] = $key;
 			$insert['original_url'] = $url;
 			$insert['tiny_url'] = $tiny_url;
+			$insert['insert_dt'] = $insert['update_dt'] = date('Y-m-d H:i:s');
 
-			//$this->load->helper('send_sms');
-
-			/* $to = $doctor_mobile;
-			$msg = $tiny_url;
-			$msg_for = "Invitation";
-
-			$this->model->sendsms($to, $msg, $msg_for); */
-
-            $this->model->_insert($insert);
-
+			array_push($doctor, $insert);
             $newrows++;
+		}
+
+		if(count($doctor)) {
+			$this->model->_insert_batch($doctor, 'doctor');
 		}
 
 		fclose($handle);
