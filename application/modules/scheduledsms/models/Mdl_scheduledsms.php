@@ -4,8 +4,8 @@ class Mdl_scheduledsms extends MY_Model {
 	public $p_key = 'sms_data_id';
 	public $table = 'sms_data';
 	private $alias = 'msgdata';
-	private $column_list = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
-    private $csv_columns = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
+	private $column_list = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added'];
+    private $csv_columns = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added'];
 
 	function __construct() {
 		parent::__construct($this->table, $this->p_key);
@@ -81,13 +81,14 @@ class Mdl_scheduledsms extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
 		
-    	$q = $this->db->select("
-    		msgdata.sms_data_id, msgdata.division_id, msgdata.message, msgdata.sms_date_time, msgdata.is_processed, msgdata.insert_dt, msgdata.update_dt,div.division_name,
+    	$q = $this->db->select(" ar.title as title,
+    		msgdata.sms_data_id, msgdata.division_id, msgdata.article_link, msgdata.message, msgdata.sms_date_time, msgdata.is_processed, msgdata.insert_dt, msgdata.update_dt,div.division_name,
     		case when msgdata.is_processed = 0 then 'Pending' 
 				when msgdata.is_processed = 1 then 'SMS Sent' end as sms_sts
     	")
 		->from('sms_data msgdata')
-		->join('divisions div', 'div.division_id = msgdata.division_id', 'left');
+		->join('divisions div', 'div.division_id = msgdata.division_id', 'left')
+		->join('article ar', 'ar.article_id = msgdata.article_id');
 				
 		$where_condition = " 1=1 ";
 
@@ -132,8 +133,12 @@ class Mdl_scheduledsms extends MY_Model {
 	function save(){
 		/*Load the form validation Library*/
 		$this->load->library('form_validation');
-
+		
 		$this->form_validation->set_rules('division_id','Division Name','trim|required|xss_clean');
+
+		if(!empty($this->input->post('article_id'))){
+			$this->form_validation->set_rules('article_link','Article Link','trim|required|xss_clean');
+		}
 		
 		if($this->input->post('sendsmsnowtest') != 1) {
 			$this->form_validation->set_rules('sms_date', 'SMS Date', 'trim|required');
@@ -166,6 +171,8 @@ class Mdl_scheduledsms extends MY_Model {
 			$sender_id = $sender[0]->sender_id;
 
 			$message = $this->input->post('message');
+			$article_id = !empty($this->input->post('article_id')) ? $this->input->post('article_id') : '';
+			$article_link = !empty($this->input->post('article_link')) ? $this->input->post('article_link') : '';
 
 			$smsnewdateforchk = date("Y-m-d",strtotime($smsDate));
 			
@@ -184,6 +191,8 @@ class Mdl_scheduledsms extends MY_Model {
 			} else {
 
 				$data['division_id'] = $division_id;
+				$data['article_id'] = $article_id;
+				$data['article_link'] = $article_link;
 				$data['message'] 	= $message;
 				$data['sms_date_time']  = $smsnewdate;						
 
@@ -281,11 +290,12 @@ class Mdl_scheduledsms extends MY_Model {
 		foreach ($data as $rows) {
 			$msg = $rows['message'];
 			$records['Division Name'] = $rows['division_name'];
+			$records['Article Title'] = $rows['title'];
+			$records['Article Link'] = $rows['article_link'];
 			$records['Message'] = "$msg";
 			$records['SMS Date Time'] = $rows['sms_date_time'];
 			$records['Processed Status'] = $rows['sms_sts'];
 			$records['Date Added'] = $rows['insert_dt'];
-			$records['Date Updated'] = $rows['update_dt'];
 			array_push($resultant_array, $records);
 		}
 

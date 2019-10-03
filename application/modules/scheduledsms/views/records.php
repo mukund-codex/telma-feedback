@@ -5,11 +5,12 @@
 		<label for="check_<?= $id ?>"></label>
 	</td>
 	<td><?php echo $record['division_name'] ?></td>
+	<td><?php echo $record['title'] ?></td>
+	<td><?php echo $record['article_link'];  ?></td>
 	<td><?php echo $record['message'] ?></td>
 	<td><?php echo $record['sms_date_time'] ?></td>
 	<td><?php echo $record['sms_sts'] ?></td>
 	<td><?php echo $record['insert_dt'] ?></td>
-	<td><?php echo $record['update_dt'] ?></td>
 </tr>
 <?php $i++;  } ?>
 

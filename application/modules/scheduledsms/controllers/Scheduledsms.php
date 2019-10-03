@@ -4,8 +4,8 @@ class Scheduledsms extends Admin_Controller
 	private $module = 'scheduledsms';
 	private $controller = 'scheduledsms';
 	private $model_name = 'mdl_scheduledsms';
-	private $columns = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
-	private $csv_fields = ['Division Name', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
+	private $columns = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
+	private $csv_fields = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
 	private $settings = [
         'permissions'=> ['add', 'remove','download'],
 	];

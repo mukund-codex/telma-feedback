@@ -2,6 +2,19 @@
 
     load('division_id', 'Division Name', 'divisions/options', true);
 
+    load('article_id', 'Article', 'article/options', true);
+
+    /* On Article click get its Link */
+    $('#article_id').on('select2:select', function(e){
+        var url = "";
+        if(e.params.data.original_url != ''){
+            url = e.params.data.original_url;
+        }else{
+            url = e.params.data.short_url;
+        }
+        $("#article_link").val(url);
+    });
+
     $('#img_preview').on('click', function (e) {
         e.preventDefault();
         var formObj = $(this).closest('form');
@@ -156,6 +169,5 @@
         var text_remaining = max_count - text_length;
         $('#textarea_feedback').html('<span class="badge">' +text_remaining + '</span>' + ' characters remaining');
     });
-
 
 })(jQuery)

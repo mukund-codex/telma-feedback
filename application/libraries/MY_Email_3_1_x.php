@@ -288,11 +288,11 @@ class MY_Email extends CI_Email {
             }
 
             reset($names);
-
+            
             foreach ($to as $address) {
 
-                list($key, $name) = each($names);
-                $this->phpmailer->addAddress($address, $name);
+               /*  list($key, $name) = each($names);
+                $this->phpmailer->addAddress($address, $name); */
             }
 
         } else {

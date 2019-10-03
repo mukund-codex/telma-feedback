@@ -48,8 +48,15 @@
                         <span>Doctor</span>
                     </a>
                 </li>
+
+                <li <?php echo ($mainmenu == 'article') ? 'class="active"': ''; ?>>
+                    <a href="<?php echo base_url("article/lists?t=$timestamp") ?>">
+                        <i class="material-icons">assignment_ind</i>
+                        <span>Articles</span>
+                    </a>
+                </li>
                 
-                <li <?php echo in_array($mainmenu, ['sms','scheduledsms']) ? 'class="active"': ''; ?>>
+                <li <?php echo in_array($mainmenu, ['sms','scheduledsms', 'email_logs']) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                     <i class="material-icons">receipt</i>
                         <span>Logs</span>
@@ -61,6 +68,10 @@
 
                         <li <?php echo ($menu == 'sms') ? 'class="active"': ''; ?>>
                             <a href="<?php echo base_url("sms/lists?t=$timestamp") ?>">SMS Log</a>
+                        </li>
+
+                        <li <?php echo ($menu == 'email_logs') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("email_logs/lists?t=$timestamp") ?>">Email Log</a>
                         </li>
                         
                     </ul>

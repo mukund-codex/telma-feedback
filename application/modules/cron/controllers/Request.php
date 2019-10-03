@@ -63,4 +63,69 @@ class Request extends Generic_Controller{
         echo 'Success';
         exit;
     }
+
+    function send_article_email(){
+        $this->load->helper('send_email');
+        $this->load->helper('send_sms');
+
+        $records = $this->model->get_doctors_articles();
+
+        if(empty($records)){
+            echo 'No Records Found.'; 
+            die();
+        }
+
+        
+        foreach($records as $key => $values){
+            $content = "";
+            $message = "";
+            
+            $data = [];
+            $sms_data_id = $values['sms_data_id'];
+            $data['doctor_id'] = $values['doctor_id'];
+            $division_name = $sms_type = $values['division_name'];
+            $sender_id = $values['sender_id'];
+            $doctor_name = $values['doctor_name'];
+            $doctor_mobile = $values['doctor_mobile'];
+            $data['doctor_email'] = $doctor_email = $values['doctor_email'];
+            $doctor_want_article = ($values['question3'] == 'Y') ? 'yes' : 'no';
+            $doctor_article_title = $values['article_title'];
+            $original_url = $values['original_url'];
+            $short_url = $values['short_url'];
+            $article_file = $values['file'];
+            
+            $data['subject'] = $subject = "TelmaSendSMS - Testing Mails";
+
+            $content .= "Dear $doctor_name,";
+
+            $data['content'] = $content;
+
+            if($doctor_want_article == 'yes'){
+                
+                $email = send_email([$doctor_email], $subject, $content, [$article_file]);
+                
+                $data['is_success'] = ($email) ?? 0;
+
+                $insert = $this->model->_insert($data, 'email_log');
+                
+            }else{
+
+                $message .= "Dear $doctor_name,".PHP_EOL;
+                $message .= "Link to access full article : ".$short_url;
+
+                $sms_status = send_sms($doctor_mobile, $message, $sms_type, '', '', $sender_id);
+                    
+                if($sms_status){
+                    $update = $this->model->_update(['sms_data_id' => $sms_data_id], ['is_processed' => 1], 'sms_data');
+                }else{
+                    echo 'SMS sending failed for ' . $sms_data_id;
+                }
+            }            
+
+        }
+
+        echo "Success";
+        exit;
+
+    }
 }

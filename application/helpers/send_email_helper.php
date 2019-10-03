@@ -2,6 +2,7 @@
 if (!function_exists('send_email')) {
 
 	function send_email($to = [], $subject, $content, $attachment = []){
+
 		$ci = &get_instance();
 		$path = 'uploads/';
 		
@@ -9,7 +10,7 @@ if (!function_exists('send_email')) {
 		$ci->load->library('email');
 
 		$mail = $ci->email
-		        ->from('info@rssdiwheel.techizertech.in', 'RSSDI')
+		        ->from('info@telma.techizertech.in', 'TELMA')
 		        ->to($to)
 		        ->subject($subject)
 		        ->message($content);
@@ -19,7 +20,7 @@ if (!function_exists('send_email')) {
 
 		if(sizeof($attachment)) : 
 			foreach ($attachment as $file) {
-				$loc = $path . $file;
+				$loc = $file;
 				$mail->attach($loc);
 			}
 		endif;
@@ -28,10 +29,12 @@ if (!function_exists('send_email')) {
 		error_log($message, 3, APPPATH . 'logs/email_log' . date('Y-m-d') . ".log");
 		
 		$result = $mail->send();
-
-		if($result)
+		
+		if($result){
 			return TRUE;
-		else
+		}
+		else{
 			return FALSE;
+		}
 	}	
 }

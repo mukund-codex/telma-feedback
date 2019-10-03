@@ -240,7 +240,7 @@ class MY_Model extends CI_Model {
 		$q->order_by("$table.update_dt desc");
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }
-
+		//echo $q->get_compiled_select();exit;
 		$collection = $q->get()->result();
 		return $collection;
     }
