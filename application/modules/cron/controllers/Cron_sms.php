@@ -43,7 +43,7 @@ class Cron_sms extends Generic_Controller
 			}
 
 			$sms_r = "Dear $doctor_name, ".PHP_EOL;
-			$sms_r .= "We are eagerly waiting to hear from you on your experience of Daily scientific Therapy realted Messages.".PHP_EOL;
+			$sms_r .= "We are eagerly waiting to hear from you on your experience of Daily scientific Therapy related Messages.".PHP_EOL;
 			$sms_r .= "Click here: $tiny_url ".PHP_EOL;
 			$sms_r .= "To share your feedback. ".PHP_EOL;
 			$sms_r .= "Wish you Happy learning! ".PHP_EOL;
