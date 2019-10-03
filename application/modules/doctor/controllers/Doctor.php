@@ -91,7 +91,7 @@ class Doctor extends User_Controller
                 $cnt++; continue;
             }
 
-			if(count($data) !== 3) { continue; }            
+			if(count($data) !== 3) { continue; }    
 			
 			$division_name = trim($data[0]);
             $doctor_name = trim($data[1]);
@@ -113,7 +113,11 @@ class Doctor extends User_Controller
 				continue;
 			}
 
-			if(!ctype_alnum($doctor_name)){
+			/* if(!ctype_alnum($doctor_name)){
+				continue;
+			} */
+
+			if( !preg_match('/^[a-zA-Z][a-zA-Z \.]+$/', $doctor_name) ){
 				continue;
 			}
 
