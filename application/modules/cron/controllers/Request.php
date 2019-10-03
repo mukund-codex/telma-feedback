@@ -38,20 +38,21 @@ class Request extends Generic_Controller{
                 $sms_data_id = $sms['sms_data_id'];
                 $name = $sms['name'];
                 $mobile = $sms['mobile'];
+                $email = (!empty($sms['email'])) ? $sms['email'] : '';
 				$division_name = $sms['division_name'];
 				$sender_id = $sms['sender_id'];
                 $sms_type = $division_name; 
                 $message = $sms['message']; 
                 $sms_date_time = $sms['sms_date_time']; 
-                $original_url = $sms['orignial_url'];
+                $original_url = $sms['original_url'];
                 $short_url = $sms['short_url'];
 
                 if(empty($short_url)){
                     $short_url = $original_url;
                 }
 
-                if(!empty($short_url)){
-                    $message .= "Link to access full text article : $short_url";
+                if(!empty($short_url) && empty($email)){
+                    $message .= PHP_EOL."Link to access full text article : $short_url";
                 }
 
                 if(empty($name) || empty($mobile) || empty($sender_id) || empty($message) || empty($sms_date_time) ) {
