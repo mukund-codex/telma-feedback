@@ -51,7 +51,7 @@ class Mdl_request extends MY_Model {
 		    di.division_name as division_name, di.sender_id as sender_id, 
 			dr.doctor_id as doctor_id, dr.name as doctor_name, dr.mobile as doctor_mobile,
 			ar.title as article_title, ar.`file`, ar.original_url, ar.short_url,
-			fd.question3, fd.email_id as doctor_email
+			fd.question3, fd.email_id as doctor_email, fd.complete_status
 		')
 		->from('email_data ed')
 		->join('divisions di', 'di.division_id = ed.division_id')
