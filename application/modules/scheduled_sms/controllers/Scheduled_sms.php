@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Scheduledsms extends Admin_Controller
+class Scheduled_sms extends Admin_Controller
 {
-	private $module = 'scheduledsms';
-	private $controller = 'scheduledsms';
-	private $model_name = 'mdl_scheduledsms';
+	private $module = 'scheduled_sms';
+	private $controller = 'scheduled_sms';
+	private $model_name = 'mdl_scheduled_sms';
 	private $columns = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
 	private $csv_fields = ['Division Name', 'Article Title', 'Article Link', 'Message', 'SMS Date Time', 'Processed Status', 'Date Added', 'Date Updated'];
 	private $settings = [

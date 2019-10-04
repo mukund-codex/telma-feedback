@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_scheduledsms extends MY_Model {
+class Mdl_scheduled_sms extends MY_Model {
 
 	public $p_key = 'sms_data_id';
 	public $table = 'sms_data';

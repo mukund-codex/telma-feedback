@@ -56,14 +56,14 @@
                     </a>
                 </li>
                 
-                <li <?php echo in_array($mainmenu, ['sms','scheduledsms', 'email_logs']) ? 'class="active"': ''; ?>>
+                <li <?php echo in_array($mainmenu, ['sms','scheduled_sms', 'email_logs']) ? 'class="active"': ''; ?>>
                     <a href="javascript:void(0);" class="menu-toggle">
                     <i class="material-icons">receipt</i>
                         <span>Logs</span>
                     </a>
                     <ul class="ml-menu">
-                        <li <?php echo ($menu == 'scheduledsms') ? 'class="active"': ''; ?>>
-                            <a href="<?php echo base_url("scheduledsms/lists?t=$timestamp") ?>">Scheduled SMS Log</a>
+                        <li <?php echo ($menu == 'scheduled_sms') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("scheduled_sms/lists?t=$timestamp") ?>">Scheduled SMS Log</a>
                         </li>
 
                         <li <?php echo ($menu == 'sms') ? 'class="active"': ''; ?>>
