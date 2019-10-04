@@ -20,9 +20,10 @@
 	</div>
 
 	<div id="article-div" style="display:none;">
-		<label class="form-label">Article Link</label>
+		<label class="form-label">Article Link/Description</label>
 		<div class="form-group">
 			<div class="form-line">
+				<textarea class="form-control" name="article_link" id="article_link" value="" readonly style="cursor:not-allowed;" id="" cols="30" rows="2"></textarea>
 				<input type="text" class="form-control" name="article_link" id="article_link" value="" readonly style="cursor:not-allowed;">
 			</div>
 		</div>

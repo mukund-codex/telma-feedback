@@ -68,6 +68,8 @@ class Mdl_request extends MY_Model {
                 $q->where("$key", $value); 
 			}
 		}
+
+		$q->group_by('fd.email_id');
         
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
         echo $this->db->get_compiled_select(); die();

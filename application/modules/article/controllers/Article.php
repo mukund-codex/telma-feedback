@@ -39,6 +39,7 @@ class Article extends Admin_Controller
 		foreach($_options as $option){
 			$new['id'] = $option->article_id;
             $new['text'] = $option->title;
+            $new['description'] = $option->description;
             $new['original_url'] = $option->original_url;
             $new['short_url'] = $option->short_url;
 

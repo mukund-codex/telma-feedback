@@ -43,9 +43,9 @@ class Request extends Generic_Controller{
                 $message = $sms['message']; 
                 $sms_date_time = $sms['sms_date_time']; 
                 $original_url = $sms['original_url'];
-                $short_url = $sms['short_url'];
+                $short_url = (isset($sms['short_url'])) ? $sms['short_url'] : '';
                 $question3 = $sms['question3'];
-                $complete_status = $sms['complete_status'];
+                $complete_status = (isset($sms['complete_status'])) ? $sms['complete_status'] : '';
 
                 if(empty($short_url)){
                     $short_url = $original_url;

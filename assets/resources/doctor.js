@@ -8,10 +8,13 @@
     $('#article_id').on('select2:select', function(e){
         $('#article-div').show();
         var url = "";
+        //console.log("Data :: ", e.params.data);
         if(e.params.data.original_url != ''){
             url = e.params.data.original_url;
-        }else{
+        }else if(e.params.data.short_url != ''){
             url = e.params.data.short_url;
+        }else{
+            url = e.params.data.description;
         }
         $("#article_link").val(url);
     });
