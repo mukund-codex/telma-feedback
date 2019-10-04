@@ -33,8 +33,6 @@ class Request extends Generic_Controller{
             
             foreach ($sms_collection as $sms) {
                 
-                $article_msg = '';
-
                 $sms_data_id = $sms['sms_data_id'];
                 $name = $sms['name'];
                 $mobile = $sms['mobile'];
@@ -50,15 +48,16 @@ class Request extends Generic_Controller{
                 if(empty($short_url)){
                     $short_url = $original_url;
                 }
-
+               
                 if(!empty($short_url) && empty($email)){
                     $message .= PHP_EOL."Link to access full text article : $short_url";
                 }
-
+               
                 if(empty($name) || empty($mobile) || empty($sender_id) || empty($message) || empty($sms_date_time) ) {
+                    
                     continue;
                 }
-
+                
                 if(strtotime($current_datetime) == strtotime($sms_date_time)) {
                     $sms_status = send_sms($mobile, $message, $sms_type, '', '', $sender_id);
                     
