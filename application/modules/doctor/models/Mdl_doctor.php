@@ -298,6 +298,7 @@ class Mdl_doctor extends MY_Model {
 		$resultant_array = [];
 		
 		foreach ($data as $rows) {
+			$records['Division Name'] = $rows['division_name'];
 			$records['Doctor Name'] = $rows['name'];
 			$records['Doctor Mobile No.'] = $rows['mobile'];
 			$records['Original URL'] = $rows['original_url'];
