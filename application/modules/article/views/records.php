@@ -7,6 +7,7 @@
         </td>
     <?php endif; ?>
     <td><?php echo $record['title']; ?></td>
+    <td><?php echo wordwrap($record['description'], 40, '<br>'); ?></td>
     <td><?php if(!empty($record['file'])): ?>
         <?php $rx_files = explode(',', $record['file']); ?>
         <?php if(count($rx_files)): ?>

@@ -18,7 +18,7 @@ class Mdl_request extends MY_Model {
 		$q = $this->db->select('sd.sms_data_id, sd.message, sd.sms_date_time, sd.is_processed,
 		d.division_name, d.sender_id, doc.doctor_id, doc.name, doc.mobile,
 		fd.question3, fd.email_id as email, 
-		ar.title as article_title, ar.file as file, 
+		ar.title as article_title, ar.description, ar.file as file, 
 		ar.original_url as original_url, ar.short_url as short_url')
         ->from('sms_data sd')
         ->join('divisions d', 'd.division_id = sd.division_id')
@@ -50,7 +50,7 @@ class Mdl_request extends MY_Model {
 			ed.email_data_id, 
 		    di.division_name as division_name, di.sender_id as sender_id, 
 			dr.doctor_id as doctor_id, dr.name as doctor_name, dr.mobile as doctor_mobile,
-			ar.title as article_title, ar.`file`, ar.original_url, ar.short_url,
+			ar.title as article_title, ar.description, ar.`file`, ar.original_url, ar.short_url,
 			fd.question3, fd.email_id as doctor_email, fd.complete_status
 		')
 		->from('email_data ed')
@@ -70,7 +70,7 @@ class Mdl_request extends MY_Model {
 		}
         
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
-        //echo $this->db->get_compiled_select(); die();
+        echo $this->db->get_compiled_select(); die();
         $collection = $q->get()->result_array();
 		return $collection;
 	}

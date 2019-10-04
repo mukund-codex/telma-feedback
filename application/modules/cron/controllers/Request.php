@@ -105,7 +105,6 @@ class Request extends Generic_Controller{
 
         foreach($records as $key => $values){
             $content = "";
-            $message = "";
             
             $data = [];
             $email_data_id = $values['email_data_id'];
@@ -119,13 +118,19 @@ class Request extends Generic_Controller{
             $doctor_article_title = $values['article_title'];
             $original_url = $values['original_url'];
             $short_url = $values['short_url'];
-            $article_file = $values['file'];
+            $article_file = (!empty($values['file'])) ? $values['file'] : '';
+            $description = (!empty($values['description'])) ? $values['description'] : '';
             
             $data['subject'] = $subject = "TelmaSendSMS - Testing Mails";
 
             $content .= "Dear $doctor_name,";
 
+            if(empty($article_file)){
+                $content .= PHP_EOL.$description;
+            }
+
             $data['content'] = $content;
+
                 
             $email = send_email([$doctor_email], $subject, $content, [$article_file]);
             

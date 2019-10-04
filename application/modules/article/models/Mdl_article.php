@@ -4,9 +4,9 @@ class Mdl_article extends MY_Model {
 	private $p_key = 'article_id';
     private $table = 'article';
     private $tb_alias = 'a';
-    private $fillable = ['title', 'file'];
- 	private $column_list = ['Title', 'File', 'Original URL', 'Short URL', 'Date'];
-    private $csv_columns = ['Title', 'File', 'Original URL', 'Short URL', 'Date'];
+    private $fillable = ['title', 'description', 'file'];
+ 	private $column_list = ['Title', 'Description', 'File', 'Original URL', 'Short URL', 'Date'];
+    private $csv_columns = ['Title', 'Description', 'File', 'Original URL', 'Short URL', 'Date'];
 
 	function __construct() {
         parent::__construct();
@@ -131,8 +131,8 @@ class Mdl_article extends MY_Model {
             return $response;
 		}
 
-        $data = $this->process_data($this->fillable, $_POST);
-
+		$data = $this->process_data($this->fillable, $_POST);
+		
 		if(($_FILES['file']['size']) > 0) {
 			$is_doc_file_upload = upload_media('file', 'uploads/articles', ['pdf'], 10000000);
 
@@ -144,25 +144,28 @@ class Mdl_article extends MY_Model {
             	
 				return $response;
 			}
+			if(!$is_doc_file_upload) {
+				$response['errors'] = [
+					"files" => '<label class="error">Invalid File Selected, Please try again.</label>',
+				];
+	
+				$response['status'] = FALSE;
+				
+				return $response;
+			}	
 		}
 
-		if(!$is_doc_file_upload) {
-	        $response['errors'] = [
-				"files" => '<label class="error">Invalid File Selected, Please try again.</label>',
-			];
 
-            $response['status'] = FALSE;
-            
-            return $response;
-		}	
-
-		$data['file'] = $is_doc_file_upload[0]['file_name'];
-
-		$url = base_url($data['file']);
-		$data['original_url'] = $url;
-
-		$tiny_url = $this->get_bitly_url($url);
-		$data['short_url'] = $tiny_url;
+		$data['file'] = (!empty($is_doc_file_upload[0]['file_name'])) ? $is_doc_file_upload[0]['file_name'] : '';
+		$data['original_url'] = '';
+		$data['short_url'] = '';
+		if(!empty($data['file'])){
+			$url = base_url($data['file']);
+			$data['original_url'] = $url;
+	
+			$tiny_url = $this->get_bitly_url($url);
+			$data['short_url'] = $tiny_url;
+		}
 
         $id = $this->_insert($data, 'article');
 		//echo $this->db->last_query();exit;
@@ -226,7 +229,8 @@ class Mdl_article extends MY_Model {
 		
 		foreach ($data as $rows) {
 			$records['Title'] = $rows['title'];
-			$records['File'] = base_url($rows['file']);
+			$records['Description'] = $rows['description'];
+			$records['File'] = (!empty($rows['file'])) ? base_url($rows['file']) : '';
 			$records['Original URL'] = $rows['original_url'];
 			$records['Short URL'] = $rows['short_url'];
 			$records['Date'] = $rows['insert_dt'];

@@ -6,6 +6,13 @@
     </div>
 </div>
 
+<label class="form-label">Description </label>
+<div class="form-group">
+    <div class="form-line">
+        <textarea name="description" id="description" class="form-control" cols="30" rows="5"></textarea>
+    </div>
+</div>
+
 <label class="form-label">Files</label>
 <div class="form-group">
     <div class="form-line">
