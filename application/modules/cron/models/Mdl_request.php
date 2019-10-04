@@ -23,7 +23,7 @@ class Mdl_request extends MY_Model {
         ->from('sms_data sd')
         ->join('divisions d', 'd.division_id = sd.division_id')
 		->join('doctor doc', 'doc.division_id = d.division_id')
-		->join('feedback fd', 'fd.doctor_id = doc.doctor_id', 'left')
+		->join('feedback fd', 'fd.doctor_id = doc.doctor_id')
 		->join('article ar', 'ar.article_id = sd.article_id')
         ->where('sd.is_processed', 0);
         
