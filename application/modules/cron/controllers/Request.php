@@ -44,12 +44,13 @@ class Request extends Generic_Controller{
                 $sms_date_time = $sms['sms_date_time']; 
                 $original_url = $sms['original_url'];
                 $short_url = $sms['short_url'];
+                $question3 = $sms['question3'];
 
                 if(empty($short_url)){
                     $short_url = $original_url;
                 }
                
-                if(!empty($short_url) && empty($email)){
+                if(!empty($short_url) && empty($email) && $question3 == 'N'){
                     $message .= PHP_EOL."Link to access full text article : $short_url";
                 }
                
