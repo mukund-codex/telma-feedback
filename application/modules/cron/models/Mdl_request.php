@@ -59,7 +59,8 @@ class Mdl_request extends MY_Model {
 		->join('doctor dr', 'ON dr.division_id = ed.division_id')
 		->join('feedback fd', 'fd.doctor_id = dr.doctor_id')
 		->where('fd.question3', 'Y')
-		->where('fd.email_id IS NOT' ,'NULL', FALSE);
+		->where('fd.email_id IS NOT' ,'NULL', FALSE)
+		->where('ed.is_processed', 0);
 
 		if(sizeof($sfilters)) { 
             
@@ -69,7 +70,7 @@ class Mdl_request extends MY_Model {
 		}
         
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
-        //echo $this->db->get_compiled_select(); die();
+        echo $this->db->get_compiled_select(); die();
         $collection = $q->get()->result_array();
 		return $collection;
 	}
