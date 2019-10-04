@@ -18,6 +18,15 @@
 			</select>
 		</div>
 	</div>
+
+	<div id="article-div" style="display:none;">
+		<label class="form-label">Article Link</label>
+		<div class="form-group">
+			<div class="form-line">
+				<input type="text" class="form-control" name="article_link" id="article_link" value="" readonly style="cursor:not-allowed;">
+			</div>
+		</div>
+	</div>
 	
 	<!-- Default unchecked -->
 	<div class="custom-control custom-checkbox">
@@ -44,13 +53,6 @@
 		<div class="form-line">
 			<textarea  name="message" placeholder="Write Here..." onkeydown="limitTextOnKeyUpDown(this.form.message,this.form.countdown,1000);" onkeyup='limitTextOnKeyUpDown(this.form.message,this.form.countdown,1000);' class="form-control" ></textarea>
 			You have <input readonly type="text" name="countdown" size="3" value="1000"> chars left<br/>	
-		</div>
-	</div>
-
-	<label class="form-label">Article Link</label>
-	<div class="form-group">
-		<div class="form-line">
-			<input type="text" class="form-control" name="article_link" id="article_link" value="" readonly style="cursor:not-allowed;">
 		</div>
 	</div>
 

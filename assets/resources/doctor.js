@@ -6,6 +6,7 @@
 
     /* On Article click get its Link */
     $('#article_id').on('select2:select', function(e){
+        $('#article-div').show();
         var url = "";
         if(e.params.data.original_url != ''){
             url = e.params.data.original_url;
