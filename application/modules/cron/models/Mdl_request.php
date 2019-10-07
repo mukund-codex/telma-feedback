@@ -72,7 +72,7 @@ class Mdl_request extends MY_Model {
 		$q->group_by('fd.email_id');
         
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
-        echo $this->db->get_compiled_select(); die();
+        //echo $this->db->get_compiled_select(); die();
         $collection = $q->get()->result_array();
 		return $collection;
 	}
