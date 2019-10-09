@@ -17,7 +17,7 @@ class Mdl_request extends MY_Model {
 	function get_doctors($sfilters = [], $limit = 0, $offset = 0) {
 		$q = $this->db->select('sd.sms_data_id, sd.message, sd.sms_date_time, sd.is_processed,
 		d.division_name, d.sender_id, doc.doctor_id, doc.name, doc.mobile,
-		fd.question3, fd.email_id as email, 
+		fd.question3, fd.email_id as email, fd.complete_status, 
 		ar.title as article_title, ar.description, ar.file as file, 
 		ar.original_url as original_url, ar.short_url as short_url')
         ->from('sms_data sd')
