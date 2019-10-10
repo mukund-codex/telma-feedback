@@ -7,6 +7,7 @@ class Mdl_feedback_records extends MY_Model {
     
      function get_filters() {
         return [
+            [],
             [
                 'field_name'=>'name',
                 'field_label'=> 'Name',
