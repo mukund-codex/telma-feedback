@@ -35,14 +35,42 @@
                     </li>
                 <?php endif; ?>
 
-                <li <?php echo ($mainmenu == 'divisions') ? 'class="active"': ''; ?>>
-                    <a href="<?php echo base_url("divisions/lists?t=$timestamp") ?>">
+                                            
+                <li <?php echo ($mainmenu == 'Users') ? 'class="active"': ''; ?>>
+                    <a href="<?php echo base_url("users/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
-                        <span>Divisions</span>
+                        <span>Users</span>
                     </a>
                 </li>
 
-                <li <?php echo ($mainmenu == 'doctor') ? 'class="active"': ''; ?>>
+                <li <?php echo (in_array($menu, ['basic'])) ? 'class="active"': ''; ?>>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">settings_applications</i>
+                        <span>Masters</span>
+                    </a>
+                    <ul class="ml-menu">
+                    <li <?php echo (isset($menu) && $menu == 'profession') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("profession/lists?t=$timestamp") ?>">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>Profession</span>
+                            </a>
+                        </li>
+                        <li <?php echo (isset($menu) && $menu == 'state') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("state/lists?t=$timestamp") ?>">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>State</span>
+                            </a>
+                        </li>
+                        <li <?php echo (isset($menu) && $menu == 'city') ? 'class="active"': ''; ?>>
+                            <a href="<?php echo base_url("city/lists?t=$timestamp") ?>">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>City</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- <li <?php echo ($mainmenu == 'doctor') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("doctor/lists?t=$timestamp") ?>">
                         <i class="material-icons">assignment_ind</i>
                         <span>Doctor</span>
@@ -80,7 +108,7 @@
                 <li <?php echo ($mainmenu == 'feedback_records') ? 'class="active"': ''; ?>>
                     <a href="<?php echo base_url("reports/feedback_records?t=$timestamp") ?>"><i class="material-icons">receipt</i>
                         <span>Feedback Records</span></a>
-                </li>
+                </li> -->
 
             </ul>
         </div>

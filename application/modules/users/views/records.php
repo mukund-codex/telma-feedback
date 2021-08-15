@@ -1,4 +1,4 @@
-<?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['division_id']; ?>
+<?php $i = 1; if(sizeof($collection)) : foreach ($collection as $record) { $id = $record['id']; ?>
 <tr>
     <?php if(! isset($all_action) || $all_action): ?>
         <td>
@@ -6,8 +6,22 @@
             <label for="check_<?= $id ?>"></label>
         </td>
     <?php endif; ?>
-    <td><?php echo $record['division_name'] ?></td>   
-    <td><?php echo $record['sender_id'] ?></td>   
+    <td><?php echo $record['fullname'] ?></td>   
+    <td><?php echo $record['designation'] ?></td>   
+    <td><?php echo $record['organisation'] ?></td>   
+    <td><?php echo $record['profession_name'] ?></td>   
+    <td><?php echo $record['email'] ?></td>   
+    <td><?php echo $record['user_type'] ?></td>   
+    <td><?php echo $record['username'] ?></td>   
+    <td><?php echo $record['password'] ?></td>   
+    <td><?php echo $record['referral_code'] ?></td>   
+    <td><?php echo $record['dob'] ?></td>   
+    <td><?php echo $record['gender'] ?></td>   
+    <td><?php echo $record['number'] ?></td>   
+    <td><?php echo $record['address'] ?></td>   
+    <td><?php echo $record['state_name'] ?></td>   
+    <td><?php echo $record['city_name'] ?></td>   
+    <td><?php echo $record['professions'] ?></td>   
     <!-- <td style="word-break: break-word;"><?php echo $record['message'] ?></td>   
     <td>
         <?php if(!empty($record['poster']) && file_exists($record['poster'])): ?>
@@ -35,7 +49,7 @@
         <?php endif; ?>
     </td>  -->
       
-    <td><?php echo $record['insert_dt'] ?></td>
+    <td><?php echo $record['created_at'] ?></td>
     <?php if(in_array('edit', $permissions)): ?>
         <td><p><a href="<?php echo base_url("$controller/edit/record/$id?c=$timestamp") ?>" class="tooltips" title="Edit <?php ucfirst($module_title) ?>" ><i class="fa fa-edit"></i> Edit <?= ucfirst($module_title) ?></a></p></td>
     <?php endif; ?>

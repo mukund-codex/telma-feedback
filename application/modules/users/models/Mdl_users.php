@@ -1,15 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Mdl_divisions extends MY_Model {
+class Mdl_users extends MY_Model {
 
-	private $p_key = 'division_id';
-	private $table = 'divisions';
-	private $alias = 'd';
-	private $fillable = ['division_name','sender_id'];
-    private $column_list = ['Name', 'Sender Id','Date'];
+	private $p_key = 'id';
+	private $table = 'users';
+	private $alias = 'u';
+	private $fillable = ['fullname','designation','organisation','profession_id','email','user_type','username','password','referral_code','dob','gender','number','address','state_id','city_id','professions'];
+    private $column_list = ['Name','Designation','Organisation','Profession','Email Id','User Type','User Name','Password','Referral Code','Date of Birth','Gender','Number','Address','State','City','Professions','Date'];
     private $csv_columns = ['Name','Sender Id'];
 
 	function __construct() {
-        parent::__construct($this->table, $this->p_key,$this->alias);
+        parent::__construct($this->table, $this->p_key, $this->alias);
     }
     
     function get_csv_columns() {
@@ -23,13 +23,69 @@ class Mdl_divisions extends MY_Model {
     function get_filters() {
         return [
             [
-                'field_name'=>'division_name',
+                'field_name'=>'name',
                 'field_label'=> 'Name',
             ],
             [
-                'field_name'=>'sender_id',
-                'field_label'=> 'Sender Id',
-            ]
+                'field_name'=>'designation',
+                'field_label'=> 'Designation',
+			],
+			[
+                'field_name'=>'organisation',
+                'field_label'=> 'Organisation',
+            ],
+			[
+                'field_name'=>'profession_id',
+                'field_label'=> 'Profession',
+            ],
+			[
+                'field_name'=>'email',
+                'field_label'=> 'Email Id',
+            ],
+			[
+                'field_name'=>'user_type',
+                'field_label'=> 'User Type',
+            ],
+			[
+                'field_name'=>'username',
+                'field_label'=> 'User Name',
+            ],
+			[
+                'field_name'=>'password',
+                'field_label'=> 'Password',
+            ],
+			[
+                'field_name'=>'referral_code',
+                'field_label'=> 'Referral Code',
+            ],
+			[
+                'field_name'=>'dob',
+                'field_label'=> 'Date of Birth',
+            ],
+			[
+                'field_name'=>'gender',
+                'field_label'=> 'Gender',
+            ],
+			[
+                'field_name'=>'number',
+                'field_label'=> 'Number',
+            ],
+			[
+                'field_name'=>'address',
+                'field_label'=> 'Address',
+            ],
+			[
+                'field_name'=>'state_id',
+                'field_label'=> 'State',
+            ],
+			[
+                'field_name'=>'city_id',
+                'field_label'=> 'City',
+            ],
+			[
+                'field_name'=>'professions',
+                'field_label'=> 'Professions',
+            ],
         ];
     }
 
@@ -49,8 +105,11 @@ class Mdl_divisions extends MY_Model {
 
 	function get_collection( $count = FALSE, $sfilters = [], $rfilters = [], $limit = 0, $offset = 0, ...$params ) {
         
-        $q = $this->db->select('*')
-        ->from('divisions d');
+        $q = $this->db->select('u.*, s.name state_name, s.id state_id, c.id city_id, c.name city_name,p.id as professions_id, p.name profession_name')
+        ->from('users u')
+        ->join('state_master s','s.id = u.state_id', 'left')
+        ->join('city_master c','c.id = u.city_id', 'left')
+        ->join('profession_master p','p.id = u.profession_id', 'left');
         
 		if(sizeof($sfilters)) { 
             
@@ -82,23 +141,24 @@ class Mdl_divisions extends MY_Model {
             }
         }
 
-		$user_role = $this->session->get_field_from_session('role','user');
+		// $user_role = $this->session->get_field_from_session('role','user');
 
-        if(empty($user_role)) {
-            $user_role = $this->session->get_field_from_session('role');
-		}
+        // if(empty($user_role)) {
+        //     $user_role = $this->session->get_field_from_session('role');
+		// }
 		
-		if(in_array($user_role, ['MR','ASM','RSM'])) {
-			$q->where('insert_user_id', $this->session->get_field_from_session('user_id', 'user'));
-		}
+		// if(in_array($user_role, ['MR','ASM','RSM'])) {
+		// 	$q->where('insert_user_id', $this->session->get_field_from_session('user_id', 'user'));
+		// }
 
 		if(! $count) {
-			$q->order_by('d.division_id desc');
+			$q->order_by('u.id desc');
 		}
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }        
         //echo $this->db->get_compiled_select(); die();
         $collection = (! $count) ? $q->get()->result_array() : $q->count_all_results();
+
 		return $collection;
     }	
     
@@ -107,33 +167,16 @@ class Mdl_divisions extends MY_Model {
 		if($type == 'save') {
 			return [
                 [
-					'field' => 'division_name',
-					'label' => 'Division Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[add.table.divisions.division_name.' . $this->input->post('division_name') .']|xss_clean'
-                ],
-                [
-					'field' => 'sender_id',
-					'label' => 'Sender Id',
-					'rules' => 'trim|required|exact_length[6]|alpha|unique_record[add.table.divisions.sender_id.' . $this->input->post('sender_id') .']|xss_clean'
-				],
+					'field' => 'fullname',
+					'label' => 'Name',
+					'rules' => 'trim|required|valid_name|max_length[150]'
+                ]
 				
 			];
 		}
 
 		if($type == 'modify') {
-			return [
-				[
-					'field' => 'division_name',
-					'label' => 'Division Name',
-					'rules' => 'trim|required|valid_name|max_length[150]|unique_record[edit.table.divisions.division_name.' . $this->input->post('division_name'). '.division_id.'. $this->input->post('division_id') .']|xss_clean'
-                ],
-                [
-					'field' => 'sender_id',
-					'label' => 'Sender Id',
-					'rules' => 'trim|required|alpha|exact_length[6]|unique_record[edit.table.divisions.sender_id.' . $this->input->post('sender_id'). '.division_id.'. $this->input->post('division_id') .']|xss_clean'
-                ],
-                
-			];
+			return [];
 		}
     }
 
@@ -142,8 +185,7 @@ class Mdl_divisions extends MY_Model {
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules($this->validate('save'));
-		
-		if(! $this->form_validation->run()){
+		if (! $this->form_validation->run()) {
 			$errors = array();	        
 	        foreach ($this->input->post() as $key => $value)
 				$errors[$key] = form_error($key, '<label class="error">', '</label>');
@@ -155,13 +197,15 @@ class Mdl_divisions extends MY_Model {
 		}
 		
 		$data = $this->process_data($this->fillable, $_POST);
+
+
 		
 /* 
 		$user_id = $this->session->get_field_from_session('user_id');
 		$data['insert_user_id'] = (int) $user_id; */
 		
 		$id = $this->_insert($data);
-		
+
         if(! $id){
             $response['message'] = 'Internal Server Error';
             $response['status'] = FALSE;
@@ -175,8 +219,8 @@ class Mdl_divisions extends MY_Model {
 		//$this->sendsms($to, $msg, $msg_for);
 
         $response['status'] = TRUE;
-        $response['message'] = 'Congratulations! Division has been added successfully.';
-        $response['redirectTo'] = 'divisions/lists';
+        $response['message'] = 'Congratulations! Users has been added successfully.';
+        $response['redirectTo'] = 'users/lists';
 
         return $response;
 	}
@@ -215,19 +259,20 @@ class Mdl_divisions extends MY_Model {
 		$this->load->library('form_validation');
 
 		$is_Available = $this->check_for_posted_record($this->p_key, $this->table);
-		if(! $is_Available['status']){ return $is_Available; }
-		
-		$this->form_validation->set_rules($this->validate('modify'));
 
-		if(! $this->form_validation->run() ){
-			$errors = array();	        
-	        foreach ($this->input->post() as $key => $value)
-	            $errors[$key] = form_error($key, '<label class="error">', '</label>');
-	        $response['errors'] = array_filter($errors); // Some might be empty
-            $response['status'] = FALSE;
+		if(! $is_Available['status']){ return $is_Available; }
+
+        // $this->form_validation->set_rules($this->validate('modify'));
+// var_dump($this->form_validation->run()); die;
+		// if(! $this->form_validation->run() ){
+		// 	$errors = array();	        
+	    //     foreach ($this->input->post() as $key => $value)
+	    //         $errors[$key] = form_error($key, '<label class="error">', '</label>');
+	    //     $response['errors'] = array_filter($errors); // Some might be empty
+        //     $response['status'] = FALSE;
             
-            return $response;
-		}		
+        //     return $response;
+		// }		
 		
         $data = $this->process_data($this->fillable, $_POST);
 

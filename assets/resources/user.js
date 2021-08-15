@@ -1,4 +1,4 @@
-(function ($) {
+application/modules/users/(function ($) {
 
     var zone = $('#bunch_id');
 
@@ -41,5 +41,7 @@
     }
 
     load('state_id', 'State', 'state', true);
+    load('city_id', 'City', 'city', true);
+    load('profession_id', 'Profession', 'profession', true);
 
 })(jQuery);

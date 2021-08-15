@@ -92,7 +92,7 @@ class MY_Model extends CI_Model {
 
 	function _insert($data, $table = '') {
 		$table = (! empty($table)) ? $table : $this->get_table();
-		$data['insert_dt'] = $data['update_dt'] = date('Y-m-d H:i:s');
+		$data['created_at'] = $data['updated_at'] = date('Y-m-d H:i:s');
 		return ($this->db->insert($table, $data)) ? $this->db->insert_id() : FALSE;
 	}
 
@@ -105,7 +105,7 @@ class MY_Model extends CI_Model {
 		$table = (! empty($table)) ? $table : $this->get_table();
 		$this->db->where($conditions);
 
-		$data['update_dt'] = date('Y-m-d H:i:s');
+		$data['updated_at'] = date('Y-m-d H:i:s');
 
 		return $this->db->update($table, $data);
 	}
@@ -122,7 +122,7 @@ class MY_Model extends CI_Model {
 			$this->db->where_in($field_name, $id_array);
 		}
 
-		$data['update_dt'] = date('Y-m-d H:i:s');
+		$data['updated_at'] = date('Y-m-d H:i:s');
 
 		return $this->db->update($table, $data);
 	}
@@ -196,7 +196,9 @@ class MY_Model extends CI_Model {
     }
     
 	function check_for_posted_record( $field, $table ){
+
 		$table = (! empty($table)) ? $table : $this->get_table();
+
         if(! isset($_POST[$field]) ){
 			$response['status'] = FALSE;
 			$response['error_msg'] = 'Invalid Request.';
@@ -237,10 +239,9 @@ class MY_Model extends CI_Model {
 			$q->where($where_condition1, NULL, FALSE);
 		}
 		// $p_key = $this->p_key;
-		$q->order_by("$table.update_dt desc");
+		$q->order_by("$table.updated_at desc");
 
 		if(!empty($limit)) { $q->limit($limit, $offset); }
-		//echo $q->get_compiled_select();exit;
 		$collection = $q->get()->result();
 		return $collection;
     }
